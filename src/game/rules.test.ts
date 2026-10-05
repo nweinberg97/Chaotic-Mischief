@@ -28,7 +28,7 @@ function seeded(seed = 42) {
 /** Start a game whose next draw is exactly `cardId`. */
 function gameWithTopCard(cardId: string, first: PlayerIndex = 0, scores: [number, number] = [0, 0]): GameState {
   const rest = PLAYABLE_IDS.filter((id) => id !== cardId);
-  const g = createGame(['Liam', 'Emma'], [...rest, cardId], first);
+  const g = createGame(['Mark', 'Katie'], [...rest, cardId], first);
   g.players[0].score = scores[0];
   g.players[1].score = scores[1];
   return g;
@@ -67,9 +67,9 @@ describe('deck data', () => {
 
 describe('setup', () => {
   it('rejects empty and duplicate names', () => {
-    expect(validateNames('  ', 'Emma')).not.toBeNull();
-    expect(validateNames('emma', 'EMMA ')).not.toBeNull();
-    expect(validateNames('Liam', 'Emma')).toBeNull();
+    expect(validateNames('  ', 'Katie')).not.toBeNull();
+    expect(validateNames('katie', 'KATIE ')).not.toBeNull();
+    expect(validateNames('Mark', 'Katie')).toBeNull();
   });
 
   it('shuffles without losing or duplicating cards', () => {

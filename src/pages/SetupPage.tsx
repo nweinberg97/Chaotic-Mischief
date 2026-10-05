@@ -63,7 +63,7 @@ export function SetupPage({ onStart }: Props) {
                 value={names[i]}
                 onChange={(e) => setName(i, e.target.value)}
                 maxLength={MAX_NAME_LENGTH}
-                placeholder={i === 0 ? 'Liam' : 'Emma'}
+                placeholder={i === 0 ? 'Mark' : 'Katie'}
                 autoComplete="off"
                 autoCapitalize="words"
                 spellCheck={false}
