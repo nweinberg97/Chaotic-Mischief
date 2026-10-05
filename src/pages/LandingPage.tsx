@@ -55,8 +55,12 @@ export function LandingPage({ hasSavedGame, onNewGame }: LandingProps) {
         {/* ── Hero ─────────────────────────────────────────────── */}
         <section className="hero">
           <div className="hero__pattern" aria-hidden>
-            {Array.from({ length: 12 }, (_, i) => (
-              <span key={i}>Chaotic Chaotic Chaotic Chaotic Chaotic Chaotic</span>
+            {Array.from({ length: 12 }, (_, row) => (
+              <span key={row} className="hero__pattern-row">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <Wordmark key={i} />
+                ))}
+              </span>
             ))}
           </div>
           <div className="hero__inner">

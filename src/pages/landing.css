@@ -50,11 +50,23 @@
   line-height: 1.05;
   white-space: nowrap;
   color: var(--cm-paper);
-  opacity: 0.035;
+  opacity: 0.055;
   pointer-events: none;
 }
-.hero__pattern span:nth-child(even) {
-  margin-left: -1.6em;
+.hero__pattern-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.6em;
+  white-space: nowrap;
+}
+.hero__pattern-row .wordmark {
+  flex: none;
+}
+.hero__pattern-row:nth-child(even) {
+  margin-left: -3.2em;
+}
+.hero__pattern .wordmark {
+  line-height: 1.15;
 }
 .hero__inner {
   position: relative;
@@ -141,6 +153,9 @@
   }
   .hero__card {
     width: 142px;
+  }
+  .hero__pattern {
+    opacity: 0.045;
   }
 }
 
