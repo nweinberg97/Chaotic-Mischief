@@ -1,17 +1,18 @@
-import { useState } from 'react';
 import { Coupon } from '../components/Coupon';
-import { PrintSheet } from '../components/PrintSheet';
 import { SiteFooter, SiteHeader } from '../components/SiteChrome';
+import { CouponUpsell } from '../components/Upsell';
+import { PRODUCTS } from '../config';
 import { COUPONS } from '../data/coupons';
-import { CREDITS_PER_COUPON, MAX_NAME_LENGTH } from '../game/rules';
+import { CREDITS_PER_COUPON } from '../game/rules';
 import { href } from '../utils/router';
 import './deck.css';
 
-/** The full printable Chaos Coupon book, optionally made out to someone. */
+/**
+ * Preview of every Chaos Coupon. Coupons won in a game print free from the
+ * winner screen; the whole print-ready book is the paid download.
+ */
 export function CouponBookPage() {
-  const [to, setTo] = useState('');
-  const [from, setFrom] = useState('');
-
+  const price = PRODUCTS.coupons.price;
   return (
     <>
       <SiteHeader />
@@ -20,38 +21,18 @@ export function CouponBookPage() {
           <p className="eyebrow">The rewards</p>
           <h1 className="deck-page__title">The Chaos Coupon Book.</h1>
           <p className="deck-page__lede">
-            Every {CREDITS_PER_COUPON} Chaos Credits earns one coupon. Win the night and you claim three. Print the
-            whole book, cut along the lines, and keep them somewhere your partner can’t “lose” them.
+            Every {CREDITS_PER_COUPON} Chaos Credits earns one coupon. Win a game and you can print the ones you
+            picked for free, with both your names on them.
           </p>
-
-          <form className="coupon-book__form" onSubmit={(e) => e.preventDefault()}>
-            <label>
-              <span>Made out to</span>
-              <input
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-                placeholder="Optional"
-                maxLength={MAX_NAME_LENGTH}
-              />
-            </label>
-            <label>
-              <span>From</span>
-              <input
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-                placeholder="Optional"
-                maxLength={MAX_NAME_LENGTH}
-              />
-            </label>
-            <button type="button" className="btn" onClick={() => window.print()}>
-              Print all {COUPONS.length}
-            </button>
-          </form>
+          <CouponUpsell
+            title={`Want the whole book? ${price}.`}
+            sub="All 31 coupons, print-ready, plus 5 blank ones to write your own. Instant PDF download."
+          />
         </header>
 
         <div className="coupon-grid">
           {COUPONS.map((c) => (
-            <Coupon key={c.id} coupon={c} to={to.trim() || undefined} from={from.trim() || undefined} />
+            <Coupon key={c.id} coupon={c} />
           ))}
         </div>
 
@@ -62,14 +43,6 @@ export function CouponBookPage() {
         </div>
       </main>
       <SiteFooter />
-
-      <PrintSheet title="Chaotic Mischief · Chaos Coupon Book">
-        {COUPONS.map((c) => (
-          <div className="print-sheet__item" key={c.id}>
-            <Coupon coupon={c} to={to.trim() || undefined} from={from.trim() || undefined} />
-          </div>
-        ))}
-      </PrintSheet>
     </>
   );
 }

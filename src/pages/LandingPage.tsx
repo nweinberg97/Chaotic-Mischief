@@ -2,8 +2,8 @@ import { Bolt, ChaosMeter, Wordmark } from '../components/Brand';
 import { CategoryIcon, EyeIcon } from '../components/CategoryIcon';
 import { Coupon } from '../components/Coupon';
 import { CardBack, CardFace } from '../components/GameCard';
+import { ShopGrid } from '../components/Shop';
 import { ShareButton, SiteFooter, SiteHeader } from '../components/SiteChrome';
-import { SHOP_URL } from '../config';
 import { getCard } from '../data/cards';
 import { CATEGORIES, CATEGORY_ORDER } from '../data/categories';
 import { COUPON_BY_ID } from '../data/coupons';
@@ -40,7 +40,13 @@ const WHAT_CONNECTION_IS = [
   'Stories you’ll still be telling next year',
 ];
 
-export function LandingPage({ hasSavedGame }: { hasSavedGame: boolean }) {
+interface LandingProps {
+  hasSavedGame: boolean;
+  /** Throws away the saved game and goes to player setup. */
+  onNewGame: () => void;
+}
+
+export function LandingPage({ hasSavedGame, onNewGame }: LandingProps) {
   const playLabel = hasSavedGame ? 'Resume game' : 'Start playing';
   return (
     <>
@@ -72,7 +78,16 @@ export function LandingPage({ hasSavedGame }: { hasSavedGame: boolean }) {
                   How it works
                 </a>
               </div>
-              <p className="hero__fine">No app. No account. One phone and someone you like.</p>
+              {hasSavedGame ? (
+                <p className="hero__fine">
+                  You’ve got a game in progress.{' '}
+                  <button type="button" className="link-btn hero__fresh" onClick={onNewGame}>
+                    Start a fresh game instead
+                  </button>
+                </p>
+              ) : (
+                <p className="hero__fine">No app. No account. One phone and someone you like.</p>
+              )}
             </div>
 
             <div className="hero__fan" aria-hidden>
@@ -301,6 +316,19 @@ export function LandingPage({ hasSavedGame }: { hasSavedGame: boolean }) {
           </div>
         </section>
 
+        {/* ── Shop ─────────────────────────────────────────────── */}
+        <section className="section shop" id="shop">
+          <div className="section__inner">
+            <p className="eyebrow">Take it offline</p>
+            <h2 className="section__title">Play on your phone for free. Or put it on paper.</h2>
+            <p className="section__lede shop__lede">
+              The web game is free, forever. If you want the cards in your hands, grab the printable PDFs today or
+              back the real boxed deck.
+            </p>
+            <ShopGrid />
+          </div>
+        </section>
+
         {/* ── Final CTA ────────────────────────────────────────── */}
         <section className="section final">
           <div className="section__inner final__inner">
@@ -314,19 +342,6 @@ export function LandingPage({ hasSavedGame }: { hasSavedGame: boolean }) {
                 {playLabel} <span aria-hidden>→</span>
               </a>
               <ShareButton />
-            </div>
-            <div className="deck-cta">
-              <p>
-                <strong>Want the original deck?</strong> The printable PDF version has all 54 cards and the full
-                coupon book.
-              </p>
-              {SHOP_URL ? (
-                <a className="btn btn--paper" href={SHOP_URL} target="_blank" rel="noreferrer">
-                  Get the Chaotic Mischief deck
-                </a>
-              ) : (
-                <span className="deck-cta__soon">Shop link coming soon</span>
-              )}
             </div>
           </div>
         </section>

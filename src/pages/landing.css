@@ -1,4 +1,5 @@
 .section {
+  scroll-margin-top: 72px;
   padding: clamp(64px, 10vw, 128px) var(--cm-gutter);
   position: relative;
   overflow: hidden;
@@ -84,6 +85,11 @@
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 32px;
+}
+.hero__fresh {
+  font-size: 0.75rem;
+  color: var(--cm-neon);
+  padding: 0 0 0 4px;
 }
 .hero__fine {
   margin-top: 18px;
@@ -569,31 +575,13 @@
 .final__ctas {
   justify-content: center;
 }
-.deck-cta {
-  margin-top: 64px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 18px 28px;
-  padding: 22px 28px;
-  border: 2px dashed rgb(242 247 247 / 0.25);
-  border-radius: 20px;
-  max-width: 760px;
-  text-align: left;
+.shop {
+  background: var(--cm-teal);
 }
-.deck-cta p {
-  flex: 1 1 280px;
-  color: #c9d6d5;
-}
-.deck-cta strong {
-  color: var(--cm-paper);
-}
-.deck-cta__soon {
-  font-family: var(--cm-font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.shop .eyebrow {
   color: var(--cm-neon);
+}
+.shop__lede {
+  color: #e2f0ef;
+  margin-bottom: 44px;
 }

@@ -1,0 +1,313 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  line-height: 0.95;
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+
+@page {
+  size: letter;
+  margin: 0;
+}
+html,
+body {
+  margin: 0;
+  background: #7d8a89;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+@media print {
+  html,
+  body {
+    background: #fff;
+  }
+}
+
+.print-doc {
+  font-family: var(--cm-font-body);
+  display: grid;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px 0;
+}
+@media print {
+  .print-doc {
+    display: block;
+    padding: 0;
+  }
+}
+
+.sheet {
+  position: relative;
+  width: 8.5in;
+  height: 11in;
+  overflow: hidden;
+  background: #fff;
+  color: var(--cm-ink);
+  break-after: page;
+  box-sizing: border-box;
+}
+
+.sheet__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.07in;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 8pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a9796;
+}
+.sheet__bolt {
+  width: 6px;
+  color: var(--cm-teal);
+}
+
+/* ── Cover ────────────────────────────────────────────────────────────── */
+
+.sheet--cover {
+  background: var(--cm-ink);
+  color: var(--cm-paper);
+  display: grid;
+  place-items: center;
+}
+.cover__pattern {
+  position: absolute;
+  inset: -15%;
+  display: grid;
+  align-content: center;
+  transform: rotate(-12deg);
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  font-size: 54pt;
+  line-height: 1.1;
+  white-space: nowrap;
+  color: var(--cm-paper);
+  opacity: 0.05;
+}
+.cover__pattern span:nth-child(even) {
+  margin-left: -1.4em;
+}
+.cover__inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.25in;
+  text-align: center;
+}
+.cover__mark {
+  font-size: 88pt;
+}
+.cover__title {
+  margin: 0.2in 0 0;
+  padding: 0.12in 0.3in 0.08in;
+  border: 2px solid var(--cm-neon);
+  border-radius: 99px;
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  font-size: 20pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cm-neon);
+}
+.cover__sub {
+  margin: 0;
+  font-size: 13pt;
+  letter-spacing: 0.06em;
+  color: #c9d6d5;
+}
+.cover__foot {
+  position: absolute;
+  bottom: 0.6in;
+  margin: 0;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 12pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cm-neon);
+}
+
+/* ── Rules ────────────────────────────────────────────────────────────── */
+
+.sheet--rules {
+  padding: 0.75in 0.85in;
+  font-family: var(--cm-font-body);
+  font-size: 11pt;
+  line-height: 1.45;
+}
+.rules__h1 {
+  font-size: 34pt;
+  text-transform: uppercase;
+  margin: 0 0 0.18in;
+}
+.rules__h2 {
+  font-size: 16pt;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0.28in 0 0.12in;
+}
+.rules__steps {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 6px;
+}
+.rules__house {
+  margin: 0.16in 0 0;
+  padding: 0.1in 0.14in;
+  border: 1.5px dashed var(--cm-teal);
+  border-radius: 8px;
+}
+.rules__legend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 7px;
+}
+.rules__legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rules__swatch {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 0.32in;
+  height: 0.44in;
+  border-radius: 4px;
+  border: 1px solid #c6d3d2;
+}
+.rules__swatch--dark {
+  background: var(--cm-ink);
+  color: var(--cm-neon);
+}
+.rules__swatch--teal {
+  background: var(--cm-neon);
+  color: var(--cm-ink);
+}
+.rules__swatch--light {
+  background: var(--cm-paper);
+  color: var(--cm-teal);
+}
+.rules__max {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 8.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cm-teal);
+}
+.rules__print {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 5px;
+}
+
+/* ── Card sheets ──────────────────────────────────────────────────────── */
+
+.sheet--cards {
+  display: grid;
+  place-items: center;
+}
+.card-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 2.5in);
+  grid-template-rows: repeat(3, 3.5in);
+}
+.print-card {
+  width: 2.5in;
+  height: 3.5in;
+}
+.print-card .cm-card,
+.print-card .cm-back {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+}
+/* A hairline keeps white cards visible against white paper. */
+.print-card .cm-card--light {
+  outline: 0.5px solid #d3dddc;
+  outline-offset: -0.5px;
+}
+
+.crop {
+  position: absolute;
+  background: #6f7c7b;
+}
+.crop--v {
+  width: 0.5px;
+  height: 0.16in;
+}
+.crop--top {
+  top: -0.21in;
+}
+.crop--bottom {
+  bottom: -0.21in;
+}
+.crop--h {
+  height: 0.5px;
+  width: 0.16in;
+}
+.crop--left {
+  left: -0.21in;
+}
+.crop--right {
+  right: -0.21in;
+}
+
+/* ── Coupon sheets ────────────────────────────────────────────────────── */
+
+.sheet--coupons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.22in;
+  padding-bottom: 0.2in;
+}
+.print-coupon {
+  width: 7.4in;
+  flex: none;
+  break-inside: avoid;
+  outline: 1px dashed #9aa6a5;
+  outline-offset: 0.08in;
+}
+
+.coupon--blank .coupon__write {
+  margin: 2.2cqi 6cqi 0;
+  border-bottom: 0.35cqi solid var(--c-fg);
+  min-height: 9cqi;
+}
+
+/* Chrome's PDF output drops content in aspect-ratio boxes on paged media,
+   so coupons get an explicit height in print (7.4in / 3.1). */
+.print-coupon .coupon {
+  aspect-ratio: auto;
+  height: 2.387in;
+}

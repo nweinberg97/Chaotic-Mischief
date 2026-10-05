@@ -1,0 +1,67 @@
+.thanks {
+  min-height: 100dvh;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 24px;
+  padding: 20px 16px 48px;
+}
+.thanks__home {
+  justify-self: start;
+  text-decoration: none;
+  font-size: 1.4rem;
+  padding: 6px 4px;
+}
+.thanks__card {
+  position: relative;
+  width: min(560px, 100%);
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  text-align: center;
+  margin-top: clamp(16px, 8vh, 80px);
+  padding: 40px 28px 30px;
+  border-radius: 26px;
+  background: var(--cm-neon);
+  color: var(--cm-ink);
+}
+.thanks__bolt {
+  width: 30px;
+  color: var(--cm-ink);
+}
+.thanks__eyebrow {
+  opacity: 0.7;
+}
+.thanks__title {
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.thanks__item {
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.thanks__card .btn {
+  --btn-bg: var(--cm-ink);
+  --btn-fg: var(--cm-paper);
+}
+.thanks__card .btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--cm-ink);
+}
+.thanks__fine {
+  font-size: 0.95rem;
+  max-width: 42ch;
+}
+.thanks__fine--warn {
+  font-weight: 600;
+}
+.thanks__next {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}

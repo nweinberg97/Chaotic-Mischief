@@ -79,6 +79,16 @@ function GameScreen({ api, game }: { api: GameApi; game: GameState }) {
           </span>
           {game.drawPile.length} left
         </div>
+        <button
+          type="button"
+          className="game__restart"
+          onClick={() => {
+            setConfirm('restart');
+            setMenuOpen(true);
+          }}
+        >
+          <span aria-hidden>↺</span> Restart
+        </button>
         <button type="button" className="game__menu-btn" onClick={() => setMenuOpen(true)} aria-label="Menu">
           <span />
           <span />
@@ -226,7 +236,7 @@ function GameScreen({ api, game }: { api: GameApi; game: GameState }) {
             <h2>{confirm === 'restart' ? 'Restart the game?' : 'Start over with new players?'}</h2>
             <p>
               {confirm === 'restart'
-                ? `Scores go back to zero and the deck gets reshuffled. ${game.players[0].name} and ${game.players[1].name} stay.`
+                ? `Practice round over? Scores go back to zero and the deck gets reshuffled. ${game.players[0].name} and ${game.players[1].name} stay.`
                 : 'This ends the current game for good.'}
             </p>
             <div className="menu__row">
@@ -247,7 +257,11 @@ function GameScreen({ api, game }: { api: GameApi; game: GameState }) {
               >
                 Yes, {confirm === 'restart' ? 'restart' : 'new game'}
               </button>
-              <button type="button" className="btn btn--ghost" onClick={() => setConfirm(null)}>
+              <button type="button" className="btn btn--ghost" onClick={() => {
+                  setConfirm(null);
+                  setMenuOpen(false);
+                }}
+              >
                 Never mind
               </button>
             </div>

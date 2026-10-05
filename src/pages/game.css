@@ -52,6 +52,45 @@
   height: 100%;
   background: var(--cm-mute-on-dark);
 }
+.game__restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 99px;
+  border: 1.5px solid rgb(242 247 247 / 0.25);
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.game__restart span {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.game__restart:hover {
+  border-color: var(--cm-neon);
+}
+.game__deck-count {
+  white-space: nowrap;
+}
+@media (max-width: 430px) {
+  .game__deck-meter {
+    display: none;
+  }
+}
+@media (max-width: 340px) {
+  .game__deck-count {
+    display: none;
+  }
+  .game__restart {
+    margin-left: auto;
+  }
+}
 .game__menu-btn {
   display: grid;
   gap: 4px;

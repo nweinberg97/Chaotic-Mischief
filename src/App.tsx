@@ -5,10 +5,11 @@ import { DeckPage } from './pages/DeckPage';
 import { GamePage } from './pages/GamePage';
 import { LandingPage } from './pages/LandingPage';
 import { SetupPage } from './pages/SetupPage';
-import { useRoute } from './utils/router';
+import { ThanksPage } from './pages/ThanksPage';
+import { navigate, useRoute } from './utils/router';
 
 export function App() {
-  const { route, anchor } = useRoute();
+  const { route, anchor, params } = useRoute();
   const game = useGame();
 
   // Scroll to top on page change, or to the anchor on the landing page.
@@ -27,7 +28,17 @@ export function App() {
       return <DeckPage />;
     case '/coupons':
       return <CouponBookPage />;
+    case '/thanks':
+      return <ThanksPage params={params} />;
     default:
-      return <LandingPage hasSavedGame={Boolean(game.game && game.game.phase !== 'won')} />;
+      return (
+        <LandingPage
+          hasSavedGame={Boolean(game.game && game.game.phase !== 'won')}
+          onNewGame={() => {
+            game.clear();
+            navigate('/play');
+          }}
+        />
+      );
   }
 }

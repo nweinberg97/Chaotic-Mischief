@@ -1,0 +1,26 @@
+/*
+ * Brand fonts, self-hosted (SIL Open Font License, see assets/fonts/OFL-*.txt).
+ * League Spartan is the display face. Jost stands in for Glacial Indifference
+ * until a licensed web version of that font is available.
+ */
+@font-face {
+  font-family: 'League Spartan';
+  src: url('../assets/fonts/LeagueSpartan-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Jost';
+  src: url('../assets/fonts/Jost-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Jost';
+  src: url('../assets/fonts/Jost-Italic-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}

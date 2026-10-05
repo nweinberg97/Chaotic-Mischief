@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Bolt } from '../components/Brand';
 import { Coupon } from '../components/Coupon';
 import { PrintSheet } from '../components/PrintSheet';
+import { CouponUpsell } from '../components/Upsell';
 import { COUPON_BY_ID, COUPONS } from '../data/coupons';
 import { CREDITS_PER_COUPON, couponAllowance, other } from '../game/rules';
 import type { GameApi } from '../game/useGame';
@@ -96,6 +97,11 @@ export function WinnerScreen({ api }: { api: GameApi }) {
             />
           ))}
         </div>
+
+        <CouponUpsell
+          title="Want the whole book?"
+          sub="All 31 coupons, print-ready, plus 5 blanks to write your own. Keep the chaos going."
+        />
       </section>
 
       <footer className="winner__dock">

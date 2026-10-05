@@ -51,7 +51,8 @@ The flow is **Landing → Setup → Draw → Play the card → Score → Winner 
 - **Game**: a deal-and-flip card animation, a quiet scoreboard with a `+2 CHAOS` microinteraction, and controls that change with each card's mechanic.
 - **Winner screen**: "Chaos has been claimed." Each player picks the coupons they earned, then prints them.
 - **Deck explorer** (`#/deck`): all 54 cards, filterable by type. Secret cards stay face down until you tap to peek.
-- **Coupon book** (`#/coupons`): all 31 Chaos Coupons, which can be made out to someone and printed.
+- **Coupon book** (`#/coupons`): a preview of all 31 Chaos Coupons, with the print-ready book on sale.
+- **Shop** (`#shop`): two instant downloads paid through Stripe, plus the boxed deck as a Kickstarter pre-order.
 
 It is mobile-first, since most people will play on one phone passed back and forth, and it works on tablet and desktop too.
 
@@ -117,7 +118,7 @@ src/
 
 **Persistence and edge cases.** Game state is saved to `localStorage` after every action, so a refresh resumes mid-card. Corrupt or outdated saves are rejected, and a save pointing at a deleted card falls back to the draw step. The deck never repeats a card until it runs out, and then offers a reshuffle that leaves out cards still in someone's hand. Name validation rejects empty and duplicate names.
 
-**Design system.** Cards use CSS container query units (`cqi`), so the same component renders as a thumbnail, a landing-page fan or a full-screen card without separate layouts. `tokens.css` holds the brand palette (`#0a0f0f`, `#f2f7f7`, `#008080`, `#19ffd6`) and the type stack (League Spartan display, Jost standing in for Glacial Indifference).
+**Design system.** Cards use CSS container query units (`cqi`), so the same component renders as a thumbnail, a landing-page fan or a full-screen card without separate layouts. `tokens.css` holds the brand palette (`#0a0f0f`, `#f2f7f7`, `#008080`, `#19ffd6`) and the type stack (League Spartan display, Jost standing in for Glacial Indifference). Both fonts are self-hosted from `src/assets/fonts` under the SIL Open Font License, so nothing loads from third-party servers.
 
 **Accessibility.** Semantic landmarks, a skip link, real buttons everywhere, native `<dialog>` modals (focus trap and Esc built in), visible focus rings, an `aria-live` announcement of each move, progressbar semantics on scores, and `prefers-reduced-motion` support. Space/Enter draws a card.
 
@@ -146,7 +147,29 @@ npm run preview    # serve the production build
 
 The production build uses relative paths and hash routing, so `dist/` can be deployed to any static host, including GitHub Pages, without configuration.
 
-To link the "Get the deck" button to the shop, set `SHOP_URL` in `src/config.ts`.
+## Selling it
+
+The web game is free. Three things are for sale, all configured in `src/config.ts`:
+
+| Product | Price | How it's sold |
+| --- | --- | --- |
+| The Chaos Coupon Book (31 coupons + 5 blanks, PDF) | $5 | Stripe Payment Link |
+| The Full Deck + Coupon Book (54-card print-and-play PDF + coupons) | $12 | Stripe Payment Link |
+| The Boxed Deck (physical) | Pre-order | Kickstarter, ships ~3 months after the campaign |
+
+**To switch on a download product:**
+
+1. Upload its PDF to Google Drive or Dropbox and copy a share link.
+2. Create a Stripe Payment Link at the right price. Under *After payment*, choose *Don't show confirmation page* and redirect to:
+   `https://nweinberg97.github.io/Chaotic-Mischief/#/thanks?item=coupons&dl=<URL-encoded share link>`
+   (use `item=bundle` for the $12 product).
+3. Paste the Payment Link into `checkoutUrl` for that product in `src/config.ts` and push.
+
+The download link lives only in Stripe, never in this public repo. The thank-you page only shows links to known file hosts (see `safeDownloadUrl`), so it can't be used to dress up arbitrary URLs. Until a `checkoutUrl` is set, its button reads "Checkout opening soon".
+
+**Kickstarter:** paste the campaign (or pre-launch) URL into `KICKSTARTER.url`, and set `live: true` once pledges open.
+
+**Regenerating the PDFs** (e.g. after the final Canva art lands): run `npm run dev`, open `/print.html?doc=deck`, `?doc=coupons` or `?doc=bundle`, and print to PDF (Letter, margins none, background graphics on). The print pages are dev-only; Vite's production build ships only `index.html`.
 
 ## Roadmap
 

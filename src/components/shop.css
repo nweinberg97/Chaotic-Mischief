@@ -1,0 +1,137 @@
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 20px;
+  align-items: stretch;
+  text-align: left;
+}
+
+.product {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 24px 24px;
+  border-radius: 22px;
+  border: 2px solid rgb(242 247 247 / 0.16);
+  background: var(--cm-ink-2);
+  color: var(--cm-paper);
+}
+.product--featured {
+  background: var(--cm-paper);
+  color: var(--cm-ink);
+  border-color: var(--cm-neon);
+  box-shadow: 0 0 0 4px rgb(25 255 214 / 0.25);
+}
+.product--physical {
+  border-style: dashed;
+}
+.product__flag {
+  position: absolute;
+  top: -14px;
+  right: 20px;
+  padding: 7px 12px 5px;
+  border-radius: 99px;
+  background: var(--cm-neon);
+  color: var(--cm-ink);
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.product__kind {
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cm-neon);
+}
+.product--featured .product__kind {
+  color: var(--cm-teal);
+}
+.product__name {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.product__price {
+  font-family: var(--cm-font-display);
+  font-weight: 900;
+  font-size: 3rem;
+  line-height: 1;
+}
+.product__tagline {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+.product__list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 10px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  flex: 1;
+  font-size: 0.98rem;
+}
+.product__list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.product__bolt {
+  flex: none;
+  width: 10px;
+  margin-top: 5px;
+  color: var(--cm-neon);
+}
+.product--featured .product__bolt {
+  color: var(--cm-teal);
+}
+.product__ship {
+  font-size: 0.9rem;
+  color: var(--cm-mute-on-dark);
+}
+
+.btn--soon {
+  opacity: 0.55;
+  cursor: default;
+  box-shadow: none;
+}
+.btn--soon:hover,
+.btn--soon:active {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Upsell strip (winner screen, coupon book) */
+.upsell {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  padding: 22px 24px;
+  margin: 28px 0;
+  border-radius: 20px;
+  background: var(--cm-paper);
+  color: var(--cm-ink);
+}
+.upsell__copy {
+  flex: 1 1 260px;
+}
+.upsell__title {
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  line-height: 1.1;
+}
+.upsell__sub {
+  margin-top: 6px;
+  color: var(--cm-mute-on-light);
+}
+.upsell__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

@@ -18,15 +18,18 @@
 }
 
 .coupon__main {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* kicker, then the title takes whatever room is left; everything after is sized to content */
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-auto-rows: auto;
+  height: 100%;
   min-height: 0;
   padding: 3.4cqi 3cqi 0;
 }
 .coupon__title {
-  flex: 1;
   display: grid;
   place-items: center;
+  min-height: 0;
 }
 .coupon__kicker {
   font-family: var(--cm-font-display);
