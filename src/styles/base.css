@@ -1,0 +1,287 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--cm-ink);
+  color: var(--cm-paper);
+  font-family: var(--cm-font-body);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+}
+
+:focus-visible {
+  outline: 3px solid var(--cm-neon);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  background: var(--cm-neon);
+  color: var(--cm-ink);
+  padding: 10px 14px;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  border-radius: var(--cm-radius-sm);
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+.btn {
+  --btn-bg: var(--cm-neon);
+  --btn-fg: var(--cm-ink);
+  --btn-border: var(--btn-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 52px;
+  padding: 0.85em 1.4em 0.75em;
+  border: 2px solid var(--btn-border);
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 0.15s var(--cm-ease-out),
+    box-shadow 0.15s var(--cm-ease-out),
+    background 0.15s;
+  box-shadow: 0 4px 0 0 rgb(0 0 0 / 0.35);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 0 0 rgb(0 0 0 / 0.35);
+}
+.btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 0 rgb(0 0 0 / 0.35);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: currentColor;
+  --btn-border: currentColor;
+  box-shadow: none;
+}
+.btn--ghost:hover,
+.btn--ghost:active {
+  box-shadow: none;
+}
+.btn--ink {
+  --btn-bg: var(--cm-ink);
+  --btn-fg: var(--cm-paper);
+}
+.btn--paper {
+  --btn-bg: var(--cm-paper);
+  --btn-fg: var(--cm-ink);
+}
+.btn--danger {
+  --btn-bg: transparent;
+  --btn-fg: var(--cm-danger);
+  --btn-border: var(--cm-danger);
+  box-shadow: none;
+}
+.btn--big {
+  min-height: 64px;
+  font-size: 1.2rem;
+  padding-inline: 2em;
+}
+.btn--block {
+  width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+.btn__sub {
+  font-family: var(--cm-font-body);
+  font-weight: 500;
+  font-size: 0.8em;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  opacity: 0.75;
+}
+
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 6px 4px;
+  cursor: pointer;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  opacity: 0.8;
+}
+.link-btn:hover {
+  opacity: 1;
+}
+
+.eyebrow {
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ── Dialogs ─────────────────────────────────────────────────────────────── */
+
+dialog.sheet {
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  border: 2px solid var(--cm-neon);
+  border-radius: 20px;
+  padding: 0;
+  background: var(--cm-ink);
+  color: var(--cm-paper);
+  box-shadow: var(--cm-shadow-lift);
+}
+dialog.sheet::backdrop {
+  background: rgb(5 8 8 / 0.75);
+  backdrop-filter: blur(3px);
+}
+dialog.sheet[open] {
+  animation: sheet-in 0.25s var(--cm-ease-out);
+}
+.sheet__body {
+  padding: 28px 24px 24px;
+  display: grid;
+  gap: 18px;
+}
+.sheet__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Print (coupon sheets) ───────────────────────────────────────────────── */
+
+/* Print sheets are portalled to <body>, next to #root. */
+.print-only {
+  display: none;
+}
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  #root {
+    display: none;
+  }
+  .print-only {
+    display: block;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print-sheet__title {
+    font-size: 14pt;
+    margin-bottom: 6mm;
+    color: #000;
+  }
+  .print-sheet__item {
+    break-inside: avoid;
+    margin-bottom: 5mm;
+    width: 100%;
+  }
+}

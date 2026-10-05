@@ -1,0 +1,178 @@
+.coupon {
+  --c-bg: var(--cm-paper);
+  --c-fg: var(--cm-ink);
+  container-type: inline-size;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 22% 7%;
+  grid-template-rows: minmax(0, 1fr);
+  width: 100%;
+  aspect-ratio: 3.1 / 1;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  border: 3px solid var(--cm-neon);
+  text-align: center;
+  font: inherit;
+  padding: 0;
+  overflow: hidden;
+}
+
+.coupon__main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 3.4cqi 3cqi 0;
+}
+.coupon__title {
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+.coupon__kicker {
+  font-family: var(--cm-font-display);
+  font-weight: 600;
+  font-size: 1.9cqi;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.coupon__title {
+  font-family: var(--cm-font-display);
+  font-weight: 900;
+  font-size: 7.4cqi;
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.coupon__note {
+  font-size: 1.7cqi;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: -0.6cqi;
+}
+.coupon__once {
+  font-family: var(--cm-font-display);
+  font-weight: 600;
+  font-size: 1.9cqi;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding-block: 1.2cqi;
+}
+.coupon__names {
+  display: flex;
+  justify-content: center;
+  gap: 4cqi;
+  font-size: 2cqi;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-bottom: 1cqi;
+}
+.coupon__fine {
+  border-top: 0.35cqi solid var(--c-fg);
+  margin-inline: -3cqi;
+  padding: 1.3cqi 0 1.2cqi;
+  font-size: 1.6cqi;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.coupon__stub {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  align-items: center;
+  padding: 2.4cqi 1cqi 2cqi;
+  border-left: 0.4cqi dashed var(--c-fg);
+}
+/* ticket notches on the perforation */
+.coupon__stub::before,
+.coupon__stub::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 3.4cqi;
+  height: 3.4cqi;
+  border-radius: 50%;
+  background: var(--cm-neon);
+  transform: translateX(-50%);
+}
+.coupon__stub::before {
+  top: -1.9cqi;
+}
+.coupon__stub::after {
+  bottom: -1.9cqi;
+}
+.coupon__no {
+  font-size: 2cqi;
+  letter-spacing: 0.2em;
+}
+.coupon__emoji {
+  font-size: 9cqi;
+  line-height: 1;
+}
+.coupon__brand {
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  font-size: 1.7cqi;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.coupon__code {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55cqi;
+  padding: 3cqi 1.6cqi;
+  border-left: 0.35cqi solid var(--c-fg);
+}
+.coupon__code span {
+  display: block;
+  background: var(--c-fg);
+  width: 100%;
+}
+
+/* ── Selectable (winner screen) ───────────────────────────────────────── */
+
+.coupon--pick {
+  cursor: pointer;
+  transition:
+    transform 0.15s var(--cm-ease-out),
+    box-shadow 0.15s,
+    opacity 0.15s;
+}
+.coupon--pick:hover:not(:disabled) {
+  transform: translateY(-2px) rotate(-0.4deg);
+}
+.coupon--pick:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.coupon--pick.is-selected {
+  --c-bg: var(--cm-ink);
+  --c-fg: var(--cm-paper);
+  box-shadow: 0 0 0 4px var(--cm-neon);
+}
+.coupon__check {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--cm-neon);
+  color: var(--cm-ink);
+  font-family: var(--cm-font-display);
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.coupon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+  gap: 16px;
+}

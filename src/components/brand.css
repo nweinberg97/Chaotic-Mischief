@@ -1,0 +1,44 @@
+.wordmark {
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 0.9;
+  white-space: nowrap;
+  display: inline-block;
+}
+.wordmark--stacked .wordmark__line {
+  display: block;
+}
+.wordmark__i {
+  position: relative;
+  display: inline-block;
+}
+.wordmark__bolt {
+  position: absolute;
+  left: 50%;
+  top: -0.2em;
+  width: 0.27em;
+  height: auto;
+  transform: translateX(-42%) rotate(8deg);
+  color: var(--wordmark-bolt, var(--cm-neon));
+}
+
+.chaos-meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18em;
+}
+.credit-token {
+  width: 0.78em;
+  height: auto;
+  transform: rotate(-8deg);
+}
+.credit-token:nth-child(2) {
+  transform: rotate(4deg);
+}
+.credit-token:nth-child(3) {
+  transform: rotate(12deg);
+}
+.credit-token--off {
+  opacity: 0.25;
+}
