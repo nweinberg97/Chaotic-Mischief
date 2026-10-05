@@ -4,6 +4,8 @@
 
 Draw a card. Cause some problems. First to 21 Chaos Credits wins the night.
 
+**▶ Play it: [nweinberg97.github.io/Chaotic-Mischief](https://nweinberg97.github.io/Chaotic-Mischief/)**
+
 ![Landing page](docs/landing.png)
 
 ---
@@ -59,7 +61,7 @@ It is mobile-first, since most people will play on one phone passed back and for
 
 **First to 21 wins.** If one card pushes both players past 21, the higher score wins, and a tie goes to whoever played the card.
 
-**Secret cards.** When a Chaos, Side Quest or Mischief card is drawn, it lands face down with a *"For Sam's eyes only"* back. The partner looks away and the drawer taps **Reveal to me**. The drawer can flip it back down after reading.
+**Secret cards.** When a Chaos, Side Quest or Mischief card is drawn, it lands face down with a *"For Emma's eyes only"* back. The partner looks away and the drawer taps **Reveal to me**. The drawer can flip it back down after reading.
 
 **Challenge cards.** Both players compete, then tap who won. The winner takes the credits, plus any doubling or Chaos Pile that's in play.
 
