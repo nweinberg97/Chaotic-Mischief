@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
  * A tiny hash router. A handful of routes don't need a routing library, and
  * hash URLs work on any static host (GitHub Pages included) with no rewrites.
  */
-export type Route = '/' | '/play' | '/deck' | '/coupons' | '/thanks';
-const ROUTES: Route[] = ['/', '/play', '/deck', '/coupons', '/thanks'];
+export type Route = '/' | '/play' | '/deck' | '/coupons' | '/shop' | '/thanks';
+const ROUTES: Route[] = ['/', '/play', '/deck', '/coupons', '/shop', '/thanks'];
 
 export interface RouteState {
   route: Route;

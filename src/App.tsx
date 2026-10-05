@@ -5,6 +5,7 @@ import { DeckPage } from './pages/DeckPage';
 import { GamePage } from './pages/GamePage';
 import { LandingPage } from './pages/LandingPage';
 import { SetupPage } from './pages/SetupPage';
+import { ShopPage } from './pages/ShopPage';
 import { ThanksPage } from './pages/ThanksPage';
 import { navigate, useRoute } from './utils/router';
 
@@ -28,6 +29,8 @@ export function App() {
       return <DeckPage />;
     case '/coupons':
       return <CouponBookPage />;
+    case '/shop':
+      return <ShopPage />;
     case '/thanks':
       return <ThanksPage params={params} />;
     default:

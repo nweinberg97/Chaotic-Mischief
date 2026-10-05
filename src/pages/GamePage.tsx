@@ -288,7 +288,8 @@ function GameScreen({ api, game }: { api: GameApi; game: GameState }) {
               </details>
             )}
             <p className="menu__links">
-              <a href={href('/deck')}>Browse the deck</a> · <a href={href('/coupons')}>Coupon book</a> ·{' '}
+              <a href={href('/deck')}>Browse the deck</a> · <a href={href('/shop')}>Download the deck</a> ·{' '}
+              <a href={href('/coupons')}>Coupon book</a> ·{' '}
               <a href={href('/')}>Home</a>
             </p>
           </>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CategoryIcon } from '../components/CategoryIcon';
 import { CardBack, CardFace } from '../components/GameCard';
 import { SiteFooter, SiteHeader } from '../components/SiteChrome';
+import { DeckUpsell } from '../components/Upsell';
 import { DECK } from '../data/cards';
 import { CATEGORIES, CATEGORY_ORDER } from '../data/categories';
 import type { CategoryId } from '../types/game';
@@ -54,6 +55,7 @@ export function DeckPage() {
             ))}
           </div>
           {filter !== 'all' && <p className="deck-page__tagline">{CATEGORIES[filter].tagline}</p>}
+          <DeckUpsell />
         </header>
 
         <ul className="deck-grid">

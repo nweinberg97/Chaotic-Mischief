@@ -581,6 +581,10 @@
 .shop .eyebrow {
   color: var(--cm-neon);
 }
+.shop__more {
+  margin-top: 28px;
+  text-align: center;
+}
 .shop__lede {
   color: #e2f0ef;
   margin-bottom: 44px;

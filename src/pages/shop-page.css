@@ -1,0 +1,79 @@
+.shop-page__h2 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.shop-steps {
+  margin-top: 80px;
+}
+.shop-steps__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+}
+.shop-steps__list li {
+  padding: 22px 20px;
+  border-radius: 18px;
+  border: 1.5px solid rgb(242 247 247 / 0.14);
+  background: var(--cm-ink-2);
+}
+.shop-steps__num {
+  font-family: var(--cm-font-display);
+  font-weight: 900;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--cm-neon);
+}
+.shop-steps__list h3 {
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  margin: 12px 0 8px;
+}
+.shop-steps__list p {
+  color: #c9d6d5;
+  font-size: 0.98rem;
+}
+
+.shop-faq {
+  margin-top: 72px;
+  max-width: 760px;
+}
+.shop-faq__item {
+  border-top: 1.5px solid rgb(242 247 247 / 0.14);
+  padding: 4px 0;
+}
+.shop-faq__item:last-child {
+  border-bottom: 1.5px solid rgb(242 247 247 / 0.14);
+}
+.shop-faq__item summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.shop-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+.shop-faq__bolt {
+  flex: none;
+  width: 11px;
+  color: var(--cm-neon);
+  transition: transform 0.2s;
+}
+.shop-faq__item[open] .shop-faq__bolt {
+  transform: rotate(90deg);
+}
+.shop-faq__item p {
+  padding: 0 0 18px 23px;
+  color: #c9d6d5;
+  max-width: 60ch;
+}

@@ -326,6 +326,11 @@ export function LandingPage({ hasSavedGame, onNewGame }: LandingProps) {
               back the real boxed deck.
             </p>
             <ShopGrid />
+            <p className="shop__more">
+              <a href={href('/shop')} className="link-btn">
+                How buying works →
+              </a>
+            </p>
           </div>
         </section>
 
