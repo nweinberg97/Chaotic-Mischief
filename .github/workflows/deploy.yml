@@ -9,6 +9,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
 
 concurrency:
   group: pages
@@ -36,5 +37,18 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # If Pages is still set to "Deploy from a branch", GitHub also publishes the raw
+      # source on every push. Wait for that to finish so this built site lands last.
+      # (Settings → Pages → Source: "GitHub Actions" removes the race entirely.)
+      - name: Wait for branch-based Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 30); do
+            pending=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=${{ github.sha }}" \
+              --jq '[.workflow_runs[] | select(.name == "pages build and deployment" and .status != "completed")] | length')
+            if [ "$pending" = "0" ]; then echo "No competing Pages build running."; exit 0; fi
+            echo "Waiting for branch-based Pages build ($i)…"; sleep 10
+          done
       - id: deployment
         uses: actions/deploy-pages@v4
