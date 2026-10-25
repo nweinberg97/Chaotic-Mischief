@@ -17,6 +17,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--c
 h1, h2, h3 { margin: 0; line-height: 1; text-wrap: balance; }
 .eyebrow { font-family: var(--cm-display); font-weight: 800; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); }
 section.band { padding-block: 48px; border-bottom: 1px solid var(--line); }
+section.band:last-of-type { border-bottom: 0; }
 section.band h2 { font-family: var(--cm-display); font-size: clamp(28px, 4.6vw, 42px); font-weight: 900; margin: 8px 0 10px; letter-spacing: -.01em; }
 .lede { color: var(--ink-2); max-width: 70ch; margin: 0 0 24px; font-size: 16px; }
 button:focus-visible, a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
@@ -31,7 +32,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--teal); outline-
 .hero h1 em { font-style: normal; color: var(--cm-neon); }
 .hero p { color: #bccbc8; max-width: 62ch; margin: 0 0 8px; }
 .map { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-.map a { color: #dce8e6; border: 1px solid #2c3a39; border-radius: 999px; padding: 5px 12px; font-size: 13px; text-decoration: none; }
+.map a { display: inline-flex; align-items: center; justify-content: center; height: 34px; padding: 0 15px; line-height: 1; color: #dce8e6; border: 1px solid #2c3a39; border-radius: 999px; font-size: 13px; text-decoration: none; }
 .map a:hover { border-color: var(--cm-neon); color: var(--cm-neon); }
 
 /* CARD (port of src/components/card.css) */
@@ -405,7 +406,6 @@ img.story__logo { height: 18px; max-width: 80px; }
     <div class="step"><div class="n">4</div><h3>First drop</h3><p>25 to 100 numbered decks at one partner location, free, paid for by the partner.</p></div>
   </div>
 </div></section>
-<footer><div class="wrap">Chaotic Mischief sandbox · October 2026 · Concept only. Not for publication.</div></footer>
 
 <script>
 const CATS = {
