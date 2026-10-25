@@ -18,7 +18,7 @@ export function VisionPage() {
     let observer: ResizeObserver | undefined;
     const measure = () => {
       const doc = el.contentDocument;
-      if (doc) setHeight(doc.documentElement.scrollHeight);
+      if (doc) setHeight(Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight));
     };
     const onLoad = () => {
       observer?.disconnect();
@@ -42,7 +42,7 @@ export function VisionPage() {
     <>
       <SiteHeader />
       <main id="main" className="vision-page">
-        <iframe ref={frame} src="vision.html" title="Chaotic Mischief: the big vision" className="vision-page__frame" style={{ height }} />
+        <iframe ref={frame} src="vision.html" title="Chaotic Mischief: the big vision" className="vision-page__frame" scrolling="no" style={{ height }} />
       </main>
       <SiteFooter />
     </>

@@ -778,6 +778,7 @@ DROPS.forEach(d => { const b = document.createElement("button"); b.type = "butto
 renderPartnerCoupons(); showVersion(VERSIONS[0]); showDrop(DROPS[0]); fit($("#vlineup"));
 /* Inside the site's page frame, the section links scroll the site page itself. */
 if (window.parent !== window && window.frameElement) {
+  document.documentElement.style.overflow = "hidden"; document.body.style.overflow = "hidden";
   document.querySelectorAll('.map a[href^="#"]').forEach(a => a.addEventListener("click", e => {
     const t = document.querySelector(a.getAttribute("href"));
     if (!t) return;
