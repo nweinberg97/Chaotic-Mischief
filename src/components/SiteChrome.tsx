@@ -17,7 +17,7 @@ export function SiteHeader({ ctaLabel = 'Start playing' }: { ctaLabel?: string }
         <a href={href('/deck')}>The deck</a>
         <a href={href('/coupons')}>Coupons</a>
         <a href={href('/shop')}>Shop</a>
-        <a href="vision.html">The vision</a>
+        <a href={href('/vision')}>The vision</a>
       </nav>
       <a href={href('/play')} className="btn site-header__cta">
         {ctaLabel}
@@ -40,7 +40,7 @@ export function SiteFooter() {
           <a href={href('/deck')}>The deck</a>
           <a href={href('/coupons')}>Coupon book</a>
           <a href={href('/shop')}>Shop</a>
-          <a href="vision.html">The vision</a>
+          <a href={href('/vision')}>The vision</a>
         </nav>
         <p className="site-footer__legal">
           <Bolt className="site-footer__bolt" /> Good trouble only. © {new Date().getFullYear()} Chaotic Mischief Games.

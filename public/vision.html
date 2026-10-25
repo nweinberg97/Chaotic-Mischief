@@ -342,7 +342,7 @@ img.story__logo { height: 18px; max-width: 80px; }
     <h1>Where this <em>could go.</em></h1>
     <p>Four versions of the game, partner rewards inside the coupons, and limited drops where the deck is free because a brand pays for it.</p>
     <p>Same ethos everywhere: make boring nights memorable. Same card. Same rules. Different worlds.</p>
-    <div class="map" aria-label="Sections"><a href="./">← Back to the game</a><a href="#versions">Four versions</a><a href="#rewards">Partner rewards</a><a href="#drops">Limited drops</a><a href="#proof">Supreme + Free Bean</a><a href="#path">How we get there</a></div>
+    <div class="map" aria-label="Sections"><a href="#versions">Four versions</a><a href="#rewards">Partner rewards</a><a href="#drops">Limited drops</a><a href="#proof">Supreme + Free Bean</a><a href="#path">How we get there</a></div>
     <p class="disclaimer">Internal concept only, for pitching. The brands shown are ideas, not partners: none is affiliated with or has endorsed Chaotic Mischief.</p>
   </div>
 </header>
@@ -776,5 +776,15 @@ VERSIONS.forEach(v => { const b = document.createElement("button"); b.type = "bu
 DROPS.forEach(d => { const b = document.createElement("button"); b.type = "button"; b.className = "droppick"; b.setAttribute("role", "tab"); b.dataset.id = d.id;
   b.innerHTML = `<span class="sw sw--logo"><img src="${ASSETS.logo[d.id] || LOGOS[d.id]}" alt=""></span><span><b>${esc(d.name)}</b><span>${esc(d.sub)}</span></span>`; b.onclick = () => showDrop(d); $("#dtabs").append(b); });
 renderPartnerCoupons(); showVersion(VERSIONS[0]); showDrop(DROPS[0]); fit($("#vlineup"));
+/* Inside the site's page frame, the section links scroll the site page itself. */
+if (window.parent !== window && window.frameElement) {
+  document.querySelectorAll('.map a[href^="#"]').forEach(a => a.addEventListener("click", e => {
+    const t = document.querySelector(a.getAttribute("href"));
+    if (!t) return;
+    e.preventDefault();
+    const y = window.frameElement.getBoundingClientRect().top + window.parent.scrollY + t.getBoundingClientRect().top - 72;
+    window.parent.scrollTo({ top: y, behavior: "smooth" });
+  }));
+}
 </script>
 </body></html>

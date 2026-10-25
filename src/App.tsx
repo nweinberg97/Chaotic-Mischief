@@ -7,6 +7,7 @@ import { LandingPage } from './pages/LandingPage';
 import { SetupPage } from './pages/SetupPage';
 import { ShopPage } from './pages/ShopPage';
 import { ThanksPage } from './pages/ThanksPage';
+import { VisionPage } from './pages/VisionPage';
 import { navigate, useRoute } from './utils/router';
 
 export function App() {
@@ -33,6 +34,8 @@ export function App() {
       return <ShopPage />;
     case '/thanks':
       return <ThanksPage params={params} />;
+    case '/vision':
+      return <VisionPage />;
     default:
       return (
         <LandingPage
