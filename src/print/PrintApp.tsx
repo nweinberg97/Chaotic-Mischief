@@ -153,7 +153,7 @@ function CardSheets({ cards }: { cards: Card[] }) {
                 <div key={j} className="card-frame print-card">
                   {card &&
                     (card.visibility === 'secret' ? (
-                      <CardBack variant="secret" label="For your eyes only" />
+                      <CardBack variant="secret" label="👀 For your eyes only" />
                     ) : (
                       <CardBack />
                     ))}

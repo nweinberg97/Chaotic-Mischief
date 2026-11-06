@@ -276,7 +276,7 @@ export function LandingPage({ hasSavedGame, onNewGame }: LandingProps) {
           <div className="section__inner secret__grid">
             <div className="secret__visual" aria-hidden>
               <div className="card-frame secret__card">
-                <CardBack variant="secret" label="For your eyes only" />
+                <CardBack variant="secret" label="👀 For your eyes only" />
               </div>
             </div>
             <div>

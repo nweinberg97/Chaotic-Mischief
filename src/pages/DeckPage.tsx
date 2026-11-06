@@ -68,13 +68,13 @@ export function DeckPage() {
                     type="button"
                     className="deck-grid__peek"
                     onClick={() => peek(card.id)}
-                    aria-label={`Peek at secret ${CATEGORIES[card.category].name} card #${card.number}`}
+                    aria-label={`Peek at secret card #${card.number}`}
                   >
                     <CardBack
                       variant="secret"
                       label={
                         <>
-                          👀 {CATEGORIES[card.category].name}
+                          👀 For your eyes only
                           <br />
                           Tap to peek
                         </>
