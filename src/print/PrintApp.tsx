@@ -229,7 +229,7 @@ export function PrintApp({ doc }: { doc: PrintDoc }) {
     <div className="print-doc">
       {deck && (
         <>
-          <Cover title="Print & Play Edition" sub="54 cards · 2 players · first to 21 wins" />
+          <Cover title="Print & Play Edition" sub={`${DECK.length} cards · 2 players · first to 21 wins`} />
           <RulesSheet />
           <CardSheets cards={DECK} />
         </>

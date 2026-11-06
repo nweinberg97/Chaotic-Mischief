@@ -26,7 +26,7 @@ export function DeckPage() {
       <main id="main" className="deck-page">
         <header className="deck-page__head">
           <p className="eyebrow">The deck</p>
-          <h1 className="deck-page__title">All 54 cards.</h1>
+          <h1 className="deck-page__title">All {DECK.length} cards.</h1>
           <p className="deck-page__lede">
             Secret cards stay face down here too, in case your partner is reading over your shoulder. Tap one to
             peek.

@@ -47,12 +47,20 @@ export type ChaosEffect =
   /** Drawer may meddle with the partner's next visible card. */
   | { type: 'sabotage'; amount: number }
   /** Drawer sets a harmless rule the partner must follow for a while. */
-  | { type: 'curse'; amount: number; seconds: number };
+  | { type: 'curse'; amount: number; seconds: number }
+  /** Swap both players' scores. */
+  | { type: 'swap' }
+  /** Both scores drop to whichever is lower. */
+  | { type: 'bankruptcy' }
+  /** Cancel any active Chaos rule; if none is active, gain `amount` instead. */
+  | { type: 'repeal'; amount: number }
+  /** A rule the players carry out themselves (no automatic score change). */
+  | { type: 'house-rule'; label: string };
 
 export interface Card {
   /** Stable, unique id. Used for persistence and duplicate prevention. */
   id: string;
-  /** Printed card number (#01–#54), matches the physical deck. */
+  /** Printed card number, matches the physical deck. */
   number: number;
   title: string;
   category: CategoryId;

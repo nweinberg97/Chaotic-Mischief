@@ -37,7 +37,7 @@ export function DeckUpsell() {
     <Upsell
       product="bundle"
       title={`Download the full deck · ${p.price}`}
-      sub="All 54 cards as a print-and-play PDF (fronts + backs), the rules sheet and the complete coupon book. Instant download after checkout."
+      sub="All 147 cards as a print-and-play PDF (fronts + backs), the rules sheet and the complete coupon book. Instant download after checkout."
     />
   );
 }

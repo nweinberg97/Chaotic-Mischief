@@ -4,7 +4,7 @@ import { Coupon } from '../components/Coupon';
 import { CardBack, CardFace } from '../components/GameCard';
 import { ShopGrid } from '../components/Shop';
 import { ShareButton, SiteFooter, SiteHeader } from '../components/SiteChrome';
-import { getCard } from '../data/cards';
+import { DECK, getCard } from '../data/cards';
 import { CATEGORIES, CATEGORY_ORDER } from '../data/categories';
 import { COUPON_BY_ID } from '../data/coupons';
 import { href } from '../utils/router';
@@ -65,7 +65,7 @@ export function LandingPage({ hasSavedGame, onNewGame }: LandingProps) {
           </div>
           <div className="hero__inner">
             <div className="hero__copy">
-              <p className="eyebrow hero__eyebrow">A couples card game · 54 cards · 2 players</p>
+              <p className="eyebrow hero__eyebrow">A couples card game · {DECK.length} cards · 2 players</p>
               <h1 className="hero__title">
                 Make boring nights <span className="hl">memorable.</span>
               </h1>
@@ -266,7 +266,7 @@ export function LandingPage({ hasSavedGame, onNewGame }: LandingProps) {
               })}
             </ul>
             <a className="btn btn--ghost" href={href('/deck')}>
-              Browse all 54 cards
+              Browse all {DECK.length} cards
             </a>
           </div>
         </section>

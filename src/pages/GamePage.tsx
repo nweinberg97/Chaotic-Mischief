@@ -7,7 +7,7 @@ import { CardBack, CardFace } from '../components/GameCard';
 import { HowToPlay } from '../components/HowToPlay';
 import { Scoreboard } from '../components/Scoreboard';
 import { Sheet } from '../components/Sheet';
-import { getCard, PLAYABLE_IDS } from '../data/cards';
+import { DECK, getCard, PLAYABLE_IDS } from '../data/cards';
 import { CATEGORIES } from '../data/categories';
 import { other } from '../game/rules';
 import type { GameApi } from '../game/useGame';
@@ -144,7 +144,7 @@ function GameScreen({ api, game }: { api: GameApi; game: GameState }) {
             ) : (
               <div className="empty-deck">
                 <h2>That’s the whole deck.</h2>
-                <p>54 cards and still nobody’s at 21? Respect. Shuffle and keep going.</p>
+                <p>{DECK.length} cards and still nobody’s at 21? Respect. Shuffle and keep going.</p>
                 <button type="button" className="btn btn--big" onClick={reshuffle}>
                   Reshuffle the deck
                 </button>

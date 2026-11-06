@@ -141,6 +141,14 @@ export function creditLabel(card: Card): string {
       case 'sabotage':
       case 'curse':
         return `+${credits(e.amount)}`;
+      case 'swap':
+        return 'SWAP SCORES';
+      case 'bankruptcy':
+        return 'RESET SCORES';
+      case 'repeal':
+        return 'CANCEL A RULE';
+      case 'house-rule':
+        return e.label;
     }
   }
   if (card.mechanic === 'challenge') return `WINNER +${n}`;
@@ -235,6 +243,33 @@ function applyChaos(s: Draft, card: Card, actor: PlayerIndex, now: number, event
       addScore(s, actor, e.amount, events);
       s.modifiers.curse = { target: partner, endsAt: now + e.seconds * 1000 };
       return `${them} has been cursed by ${me}. ${signed(e.amount)} for the curse-caster.`;
+    case 'swap': {
+      const [a, b] = [s.players[0].score, s.players[1].score];
+      if (a === b) return `${me} played ${card.title}. Scores are tied, so nothing changes.`;
+      addScore(s, 0, b - a, events);
+      addScore(s, 1, a - b, events);
+      return `SCORE SWAP! ${me} and ${them} trade places.`;
+    }
+    case 'bankruptcy': {
+      const low = Math.min(s.players[0].score, s.players[1].score);
+      for (const p of [0, 1] as PlayerIndex[]) addScore(s, p, low - s.players[p].score, events);
+      return `"I DECLARE BANKRUPTCY!" Both scores reset to ${low}.`;
+    }
+    case 'repeal': {
+      const m = s.modifiers;
+      const active = m.doubleNextChallenge || m.imposter !== null || m.sabotageBy !== null || m.curse !== null;
+      if (!active) {
+        addScore(s, actor, e.amount, events);
+        return `${me} played ${card.title}, but there was nothing to cancel. ${signed(e.amount)}.`;
+      }
+      m.doubleNextChallenge = false;
+      m.imposter = null;
+      m.sabotageBy = null;
+      m.curse = null;
+      return `${me} played ${card.title}. Every active Chaos rule is cancelled.`;
+    }
+    case 'house-rule':
+      return `${me} played ${card.title}. House rules apply.`;
   }
 }
 

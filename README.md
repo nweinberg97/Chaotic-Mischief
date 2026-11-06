@@ -12,7 +12,7 @@ Draw a card. Cause some problems. First to 21 Chaos Credits wins the night.
 
 ## What it is
 
-Chaotic Mischief is a 54-card game for two people who are in a relationship and stuck in a rut. Its cards hand out challenges, side quests, performances, sneaky missions and the occasional honest moment.
+Chaotic Mischief is a 147-card game for two people who are in a relationship and stuck in a rut. Its cards hand out challenges, side quests, performances, sneaky missions and the occasional honest moment.
 
 It started life as a printable PDF deck. This repo is the interactive version: a playable web prototype that shows where the product goes when the deck becomes digital.
 

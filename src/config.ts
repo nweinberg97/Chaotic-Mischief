@@ -46,7 +46,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
     price: '$12',
     tagline: 'The whole game on paper. Print it, cut it, cause problems.',
     includes: [
-      'All 54 cards as a print-and-play PDF (fronts + backs)',
+      'All 147 cards as a print-and-play PDF (fronts + backs)',
       'Rules sheet and card legend',
       'The complete Chaos Coupon Book',
       'Instant PDF download',
@@ -69,7 +69,7 @@ export const KICKSTARTER = {
   shipping: 'Ships about 3 months after the campaign ends',
   tagline: 'Real cards. Real box. Real consequences.',
   includes: [
-    'All 54 cards, printed on proper card stock',
+    'All 147 cards, printed on proper card stock',
     'The Chaos Coupon Book, printed',
     'A box worth leaving on the coffee table',
     'Backer-only early pricing',

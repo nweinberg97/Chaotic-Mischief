@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: 'What’s actually in the full deck PDF?',
-    a: 'A cover, a one-page rules sheet, and all 54 cards laid out 9 to a page with matching backs and crop marks, plus the full Chaos Coupon Book.',
+    a: 'A cover, a one-page rules sheet, and all 147 cards laid out 9 to a page with matching backs and crop marks, plus the full Chaos Coupon Book.',
   },
   {
     q: 'I paid but lost my download.',

@@ -6,6 +6,7 @@ import type { GameState, Outcome, PlayerIndex } from '../types/game';
 import {
   WIN_SCORE,
   allowedOutcomes,
+  creditLabel,
   couponAllowance,
   createGame,
   freshDeckOrder,
@@ -40,8 +41,8 @@ const play = (g: GameState, outcome: Outcome, now = 0) =>
 describe('deck data', () => {
   it('is valid and complete', () => {
     expect(validateDeck(DECK)).toEqual([]);
-    expect(DECK).toHaveLength(54);
-    expect(PLAYABLE_IDS).toHaveLength(54);
+    expect(DECK).toHaveLength(147);
+    expect(PLAYABLE_IDS).toHaveLength(DECK.length);
   });
 
   it('respects every category credit cap and has every category', () => {
@@ -84,7 +85,7 @@ describe('drawing', () => {
   it('never repeats a card until the deck is exhausted', () => {
     let g = createGame(['A', 'B'], freshDeckOrder(seeded(7)), 0);
     const seen = new Set<string>();
-    for (let i = 0; i < 54; i++) {
+    for (let i = 0; i < DECK.length; i++) {
       g = gameReducer(g, { type: 'draw' });
       const id = g.current!.cardId;
       expect(seen.has(id)).toBe(false);
@@ -95,7 +96,7 @@ describe('drawing', () => {
     // Drawing from an empty deck is a no-op until reshuffled.
     expect(gameReducer(g, { type: 'draw' })).toBe(g);
     g = gameReducer(g, { type: 'reshuffle', order: freshDeckOrder(seeded(8), heldCardIds(g)) });
-    expect(g.drawPile).toHaveLength(54);
+    expect(g.drawPile).toHaveLength(DECK.length);
   });
 
   it('alternates turns', () => {
@@ -220,6 +221,32 @@ describe('chaos cards', () => {
     g = gameReducer(g, { type: 'draw' });
     expect(g.current!.sabotagedBy).toBe(0);
     expect(g.modifiers.sabotageBy).toBeNull();
+  });
+
+  it('Score Swap trades the two scores', () => {
+    const g = play(gameWithTopCard('score-swap', 0, [12, 3]), { kind: 'chaos' });
+    expect(g.players.map((p) => p.score)).toEqual([3, 12]);
+  });
+
+  it('Bankruptcy drops both scores to the lower one', () => {
+    const g = play(gameWithTopCard('bankruptcy', 1, [14, 6]), { kind: 'chaos' });
+    expect(g.players.map((p) => p.score)).toEqual([6, 6]);
+  });
+
+  it('Repeal cancels active rules, or pays 1 when there are none', () => {
+    const cursed = play(gameWithTopCard('partners-curse', 0), { kind: 'chaos' }, 1000);
+    cursed.drawPile = [...cursed.drawPile.filter((id) => id !== 'repeal'), 'repeal'];
+    const cleared = play(cursed, { kind: 'chaos' });
+    expect(cleared.modifiers.curse).toBeNull();
+    expect(cleared.players[1].score).toBe(0);
+    const empty = play(gameWithTopCard('repeal', 0), { kind: 'chaos' });
+    expect(empty.players[0].score).toBe(1);
+  });
+
+  it('house-rule cards change no scores and show their own label', () => {
+    const g = play(gameWithTopCard('tag-team', 0, [4, 4]), { kind: 'chaos' });
+    expect(g.players.map((p) => p.score)).toEqual([4, 4]);
+    expect(creditLabel(getCard('tag-team')!)).toBe('TAG TEAM');
   });
 });
 
