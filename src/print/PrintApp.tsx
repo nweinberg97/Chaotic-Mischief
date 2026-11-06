@@ -151,7 +151,12 @@ function CardSheets({ cards }: { cards: Card[] }) {
             <div className="card-grid">
               {mirrored.map((card, j) => (
                 <div key={j} className="card-frame print-card">
-                  {card && <CardBack />}
+                  {card &&
+                    (card.visibility === 'secret' ? (
+                      <CardBack variant="secret" label="For your eyes only" />
+                    ) : (
+                      <CardBack />
+                    ))}
                 </div>
               ))}
               <CropMarks />
