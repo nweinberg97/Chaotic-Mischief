@@ -286,6 +286,15 @@ describe('persistence', () => {
     expect(parseSave(JSON.stringify({ version: 99 }))).toBeNull();
   });
 
+  it('adds cards that are new since the save to the draw pile', () => {
+    const g = gameReducer(gameWithTopCard('cat-walk'), { type: 'draw' });
+    const old = { ...g, drawPile: g.drawPile.filter((id) => id !== 'plot-twist' && id !== 'tag-team') };
+    const back = parseSave(JSON.stringify(old))!;
+    expect(back.drawPile).toContain('plot-twist');
+    expect(back.drawPile).toContain('tag-team');
+    expect(back.drawPile.length + back.discard.length + 1).toBe(PLAYABLE_IDS.length);
+  });
+
   it('recovers from a save that references a deleted card', () => {
     const g = gameReducer(gameWithTopCard('cat-walk'), { type: 'draw' });
     const broken = { ...g, current: { ...g.current!, cardId: 'deleted-card' }, drawPile: ['deleted-card', ...g.drawPile] };

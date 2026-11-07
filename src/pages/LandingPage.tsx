@@ -252,6 +252,7 @@ export function LandingPage({ hasSavedGame, onNewGame }: LandingProps) {
                       <p className="type-tile__tag">{cat.tagline}</p>
                       <p className="type-tile__blurb">{cat.blurb}</p>
                       <p className="type-tile__facts">
+                        <span>{DECK.filter((c) => c.category === id).length} cards</span>
                         <ChaosMeter value={cat.maxCredits} />
                         <span>up to {cat.maxCredits}</span>
                         {cat.visibility === 'secret' && (

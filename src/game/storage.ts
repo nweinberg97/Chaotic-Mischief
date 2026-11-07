@@ -1,5 +1,5 @@
 import type { GameState } from '../types/game';
-import { getCard } from '../data/cards';
+import { getCard, PLAYABLE_IDS } from '../data/cards';
 
 const KEY = 'chaotic-mischief:game:v1';
 
@@ -33,6 +33,14 @@ export function parseSave(raw: string | null): GameState | null {
     // Forget cards that were removed from the deck since this save.
     s.drawPile = s.drawPile.filter((id) => getCard(id));
     s.missions = s.missions.filter((m) => getCard(m.cardId));
+    // Cards added to the deck since this save join the draw pile at random spots,
+    // so a game already in progress gets the new cards too.
+    const known = new Set([...s.drawPile, ...s.discard, ...s.missions.map((m) => m.cardId)]);
+    if (s.current) known.add(s.current.cardId);
+    for (const id of PLAYABLE_IDS) {
+      if (known.has(id)) continue;
+      s.drawPile.splice(Math.floor(Math.random() * (s.drawPile.length + 1)), 0, id);
+    }
     s.players = [
       { ...s.players[0], score: Math.max(0, Math.floor(s.players[0].score)) },
       { ...s.players[1], score: Math.max(0, Math.floor(s.players[1].score)) },
