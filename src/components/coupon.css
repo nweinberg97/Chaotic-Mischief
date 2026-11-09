@@ -114,13 +114,12 @@
   font-size: 9cqi;
   line-height: 1;
 }
+/* the real wordmark, bolt over the i, same as everywhere else */
 .coupon__brand {
-  font-family: var(--cm-font-display);
-  font-weight: 800;
-  font-size: 1.7cqi;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  line-height: 1.1;
+  --wordmark-bolt: var(--cm-teal);
+  font-size: 2.5cqi;
+  line-height: 0.95;
+  text-align: center;
 }
 
 .coupon__code {

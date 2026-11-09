@@ -1,4 +1,5 @@
 import { COUPON_FINE_PRINT } from '../data/coupons';
+import { Wordmark } from './Brand';
 import type { Coupon as CouponData } from '../types/game';
 import './coupon.css';
 
@@ -55,11 +56,7 @@ export function Coupon({ coupon, to, from, selected, onToggle, disabled }: Props
       <div className="coupon__stub" aria-hidden>
         <span className="coupon__no">{number}</span>
         <span className="coupon__emoji">{coupon.emoji}</span>
-        <span className="coupon__brand">
-          Chaotic
-          <br />
-          Mischief
-        </span>
+        <Wordmark stacked className="coupon__brand" />
       </div>
       <div className="coupon__code" aria-hidden>
         {barcode(coupon.number).map((w, i) => (

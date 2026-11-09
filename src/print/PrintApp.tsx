@@ -100,7 +100,10 @@ function RulesSheet() {
           the backs line up. Single-sided printer? Print both and glue them back to back.
         </li>
         <li>Cut along the crop marks. Each card is 2.5 × 3.5 in, the size of a standard playing card.</li>
-        <li>Keep track of Chaos Credits with pen and paper, coins, or the free web game.</li>
+        <li>
+          Keeping score: keep every card you complete in your own pile, and tally Chaos Credits on paper — one line
+          per credit, the fifth line crosses the other four. Lose credits? Scratch out lines.
+        </li>
       </ul>
     </section>
   );
@@ -181,11 +184,7 @@ function BlankCoupon({ n }: { n: number }) {
       <div className="coupon__stub">
         <span className="coupon__no">W{String(n).padStart(2, '0')}</span>
         <span className="coupon__emoji">✍️</span>
-        <span className="coupon__brand">
-          Chaotic
-          <br />
-          Mischief
-        </span>
+        <Wordmark stacked className="coupon__brand" />
       </div>
       <div className="coupon__code">
         {Array.from({ length: 26 }, (_, i) => (
