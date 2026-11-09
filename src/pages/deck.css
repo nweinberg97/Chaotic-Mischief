@@ -88,9 +88,11 @@
 .deck-grid__peek:hover {
   transform: translateY(-4px) rotate(-1deg);
 }
+/* On phones, one card per row so the card text stays readable (two-up made it ~6px). */
 @media (max-width: 520px) {
   .deck-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 14px 10px;
+    grid-template-columns: minmax(0, 340px);
+    justify-content: center;
+    gap: 20px;
   }
 }

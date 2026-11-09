@@ -76,6 +76,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* Same height with or without the Secret pill, so every title starts at the same line. */
+  min-height: 6.6cqi;
   gap: 2cqi;
   font-family: var(--cm-font-display);
   font-weight: 700;
@@ -99,6 +101,12 @@
 }
 .cm-card__time {
   letter-spacing: 0.06em;
+}
+/* League Spartan caps sit high in their line box; nudge the plain labels down to
+   match the optically centred text inside the Secret pill. */
+.cm-card__top > .cm-card__cat,
+.cm-card__top > .cm-card__time {
+  padding-top: 0.3cqi;
 }
 
 .cm-card__body {
@@ -186,7 +194,7 @@
 .cm-card__foot {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   margin-top: 4.5cqi;
   font-size: 3.5cqi;
 }
