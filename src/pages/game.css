@@ -680,3 +680,14 @@
     max-width: 880px;
   }
 }
+
+/* Icon nudges: each glyph's ink sits differently in its 24px box, so these put the
+   centre of every icon on the centre of the capital letters next to it (measured). */
+.howto__cats .cat-icon--action { transform: translateY(-7.3%); }
+.howto__cats .cat-icon--performance { transform: translateY(-12.4%); }
+.howto__cats .cat-icon--challenge { transform: translateY(-10.1%); }
+.howto__cats .cat-icon--connection { transform: translateY(-3.7%); }
+.howto__cats .cat-icon--side-quest { transform: translateY(-8.7%); }
+.howto__cats .cat-icon--mischief { transform: translateY(-5.9%); }
+.howto__cats .cat-icon--chaos { transform: translateY(-9.7%); }
+.timer > svg { transform: translateY(-15%); }

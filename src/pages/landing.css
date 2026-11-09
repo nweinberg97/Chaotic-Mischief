@@ -604,3 +604,14 @@
   color: #e2f0ef;
   margin-bottom: 44px;
 }
+
+/* Icon nudges: each glyph's ink sits differently in its 24px box, so these put the
+   centre of every icon on the centre of the capital letters next to it (measured). */
+.type-tile__meta h3 .cat-icon--action { transform: translateY(-14.8%); }
+.type-tile__meta h3 .cat-icon--performance { transform: translateY(-15.6%); }
+.type-tile__meta h3 .cat-icon--challenge { transform: translateY(-14.1%); }
+.type-tile__meta h3 .cat-icon--connection { transform: translateY(-12.7%); }
+.type-tile__meta h3 .cat-icon--side-quest { transform: translateY(-12.7%); }
+.type-tile__meta h3 .cat-icon--mischief { transform: translateY(-4.4%); }
+.type-tile__meta h3 .cat-icon--chaos { transform: translateY(-9.1%); }
+.type-tile__secret svg { transform: translateY(-8%); }

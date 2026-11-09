@@ -96,3 +96,13 @@
     gap: 20px;
   }
 }
+
+/* Icon nudges: each glyph's ink sits differently in its 24px box, so these put the
+   centre of every icon on the centre of the capital letters next to it (measured). */
+.chip .cat-icon--action { transform: translateY(-17.1%); }
+.chip .cat-icon--performance { transform: translateY(-21.6%); }
+.chip .cat-icon--challenge { transform: translateY(-18.8%); }
+.chip .cat-icon--connection { transform: translateY(-15.5%); }
+.chip .cat-icon--side-quest { transform: translateY(-17.7%); }
+.chip .cat-icon--mischief { transform: translateY(-8.3%); }
+.chip .cat-icon--chaos { transform: translateY(-11.0%); }
