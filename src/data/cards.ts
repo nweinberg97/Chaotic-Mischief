@@ -700,10 +700,10 @@ const RAW_CARDS: CardInput[] = [
     timerSeconds: 60,
   },
   {
-    id: 'draw-what-i-describe',
-    title: "Draw What I Describe",
+    id: 'lost-in-translation',
+    title: 'Lost in Translation',
     category: 'performance',
-    description: "Your partner describes something without naming it. You have one minute to draw it.",
+    description: 'Your partner describes something without naming it. You have one minute to draw it. Then the big reveal.',
     creditValue: 1,
     mechanic: 'standard',
     timerSeconds: 60,
