@@ -101,8 +101,8 @@ function RulesSheet() {
         </li>
         <li>Cut along the crop marks. Each card is 2.5 × 3.5 in, the size of a standard playing card.</li>
         <li>
-          Keeping score: keep every card you complete in your own pile, and tally Chaos Credits on paper — one line
-          per credit, the fifth line crosses the other four. Lose credits? Scratch out lines.
+          Keeping score: keep every card you complete in your own pile, and keep a running total on paper or your
+          phone. Earn credits, add them. Lose credits, subtract them.
         </li>
       </ul>
     </section>
