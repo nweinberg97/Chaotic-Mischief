@@ -74,7 +74,8 @@ export function CardFace({ card, children }: CardFaceProps) {
 }
 
 interface CardBackProps {
-  variant?: 'standard' | 'secret';
+  /** standard = black cards, light = white cards, secret = teal cards. */
+  variant?: 'standard' | 'light' | 'secret';
   label?: ReactNode;
 }
 

@@ -3,6 +3,7 @@ import { useGame } from './game/useGame';
 import { CouponBookPage } from './pages/CouponBookPage';
 import { DeckPage } from './pages/DeckPage';
 import { GamePage } from './pages/GamePage';
+import { LabPage } from './pages/LabPage';
 import { LandingPage } from './pages/LandingPage';
 import { SetupPage } from './pages/SetupPage';
 import { ShopPage } from './pages/ShopPage';
@@ -36,6 +37,8 @@ export function App() {
       return <ThanksPage params={params} />;
     case '/vision':
       return <VisionPage />;
+    case '/lab':
+      return <LabPage params={params} />;
     default:
       return (
         <LandingPage
