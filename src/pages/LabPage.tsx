@@ -251,7 +251,6 @@ export function LabPage({ params }: { params: URLSearchParams }) {
   const [view, setView] = useState<'all' | 'changes' | 'new'>('all');
   const [editing, setEditing] = useState<{ draft: Card; isNew: boolean; original?: Card } | null>(null);
   const [shareUrl, setShareUrl] = useState('');
-  const [sentBy, setSentBy] = useState<'text' | 'email'>('email');
   const [copied, setCopied] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
 
@@ -286,54 +285,11 @@ export function LabPage({ params }: { params: URLSearchParams }) {
 
   const shareSummary = `${counts.edited} edited, ${counts.added} new, ${counts.removed} removed`;
 
-  // The share link is kept ready in advance, so tapping Text or Email opens the phone's share sheet right away
-  // (phones only allow that directly from a tap, not after waiting for the link to be built).
-  const [readyLink, setReadyLink] = useState('');
-  useEffect(() => {
-    let live = true;
-    encodeLab(lab).then((code) => {
-      if (live) setReadyLink(`${window.location.origin}${window.location.pathname}#/lab?d=${code}`);
-    });
-    return () => {
-      live = false;
-    };
-  }, [lab]);
-
-  function buildLink() {
-    setShareUrl(readyLink);
+  /** One step: build the link and open an email with it. The sender only adds the address. */
+  async function emailChanges() {
+    const url = `${window.location.origin}${window.location.pathname}#/lab?d=${await encodeLab(lab)}`;
+    setShareUrl(url);
     setCopied(false);
-    return readyLink;
-  }
-
-  /** Text: the phone's share sheet (Messages is there) or an SMS draft; on a computer, copy the link. */
-  async function textChanges() {
-    const url = buildLink();
-    setSentBy('text');
-    const text = `Here are my Chaotic Mischief card changes (${shareSummary}): ${url}`;
-    if (typeof navigator.share === 'function') {
-      try {
-        await navigator.share({ text });
-      } catch {
-        /* closed the share sheet */
-      }
-      return;
-    }
-    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      window.location.href = `sms:?&body=${encodeURIComponent(text)}`;
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-    } catch {
-      setCopied(false);
-    }
-  }
-
-  /** Email: open a ready email with the link. The sender only adds the address. */
-  function emailChanges() {
-    const url = buildLink();
-    setSentBy('email');
     const subject = 'My Chaotic Mischief card changes';
     const body = `Here are my card changes (${shareSummary}). Open this link to see them in the Card Lab:\n\n${url}\n`;
     window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -373,7 +329,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
           <h1>Every card, ready to play with.</h1>
           <p>
             Edit any card, add new ones, or take cards out. Click a card to flip it. Nothing here changes the real game:
-            your changes stay on this device until you send them with <strong>Text my changes</strong> or <strong>Email my changes</strong>.
+            your changes stay on this device until you send them with <strong>Email my changes</strong>.
           </p>
         </section>
 
@@ -413,10 +369,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             <button type="button" className="btn" onClick={() => startNew()}>
               + New card
             </button>
-            <button type="button" className="btn btn--ghost" onClick={textChanges} disabled={totalChanges === 0 || !readyLink}>
-              Text my changes
-            </button>
-            <button type="button" className="btn btn--ghost" onClick={emailChanges} disabled={totalChanges === 0 || !readyLink}>
+            <button type="button" className="btn btn--ghost" onClick={emailChanges} disabled={totalChanges === 0}>
               Email my changes
             </button>
             <button type="button" className="btn btn--ghost" aria-pressed={showBacks} onClick={() => setShowBacks((b) => !b)}>
@@ -455,20 +408,14 @@ export function LabPage({ params }: { params: URLSearchParams }) {
           {shareUrl && (
             <div className="lab-share" role="region" aria-label="Email your changes">
               <div className="lab-share__top">
-                <h2>{sentBy === 'text' ? (copied ? 'Link copied' : 'Send it in a text') : 'Your email should be open'}</h2>
+                <h2>Your email should be open</h2>
                 <button type="button" className="lab-link" onClick={() => setShareUrl('')}>
                   Close
                 </button>
               </div>
-              <p>
-                {sentBy === 'text'
-                  ? copied
-                    ? `Paste it into a text. It has your changes (${shareSummary}).`
-                    : `Pick Messages and choose who to send it to. The link has your changes (${shareSummary}).`
-                  : `The email already has the link with your changes (${shareSummary}). Just add the address and send.`}
-              </p>
+              <p>The email already has the link with your changes ({shareSummary}). Just add the address and send.</p>
               <p className="lab-share__note">
-                {sentBy === 'text' ? 'Nothing opened?' : 'Email didn’t open?'}{' '}
+                Email didn’t open?{' '}
                 <button type="button" className="lab-link" onClick={copyLink}>
                   {copied ? 'Link copied' : 'Copy the link'}
                 </button>{' '}
