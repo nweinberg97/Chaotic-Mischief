@@ -17,7 +17,6 @@ import {
   mechanicFor,
   nextNumber,
   normalizeCard,
-  proposalLab,
   removeCard,
   restoreCard,
   revertCard,
@@ -385,17 +384,6 @@ export function LabPage({ params }: { params: URLSearchParams }) {
     }
   }
 
-  function download() {
-    const blob = new Blob([JSON.stringify({ changes: lab, deck: inDeck.map((c) => c.card) }, null, 2)], {
-      type: 'application/json',
-    });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `chaotic-mischief-card-changes-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  }
-
   function startNew(category: CategoryId = 'connection') {
     setEditing({ draft: blankCard(category, nextNumber(DECK, lab)), isNew: true });
   }
@@ -472,9 +460,6 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             </button>
           </div>
           <div className="lab-bar__more">
-            <button type="button" className="lab-link" onClick={() => setLab(proposalLab(DECK))}>
-              Load the Nov rules proposal
-            </button>
             <span className="lab-pdf">
               <span className="lab-pdf__label">Download a PDF:</span>{' '}
               <button type="button" className="lab-link" onClick={() => setPrinting('all')}>
@@ -489,9 +474,6 @@ export function LabPage({ params }: { params: URLSearchParams }) {
                 New cards only
               </button>
             </span>
-            <button type="button" className="lab-link" onClick={download} disabled={totalChanges === 0}>
-              Download changes as data
-            </button>
             {confirmReset ? (
               <span className="lab-confirm">
                 Clear every change on this device?{' '}
