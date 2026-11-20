@@ -250,9 +250,10 @@
 }
 .cm-back__pattern {
   position: absolute;
-  inset: -10%;
+  inset: -40%;
   display: grid;
   align-content: center;
+  justify-content: center;
   transform: rotate(-12deg);
   font-family: var(--cm-font-display);
   font-weight: 800;

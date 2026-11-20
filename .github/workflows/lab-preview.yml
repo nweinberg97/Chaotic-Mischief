@@ -1,0 +1,29 @@
+name: Card Lab preview build
+
+on:
+  push:
+    branches: [card-lab-2]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm test
+      - run: npm run build
+      - name: Push the built site to the lab-dist branch for review
+        run: |
+          cd dist
+          git init -q -b lab-dist
+          git config user.name "lab-preview"
+          git config user.email "lab-preview@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Card Lab preview build of ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" lab-dist

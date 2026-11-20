@@ -315,6 +315,45 @@
   border: 1px solid var(--cm-mute-on-dark);
   color: var(--cm-mute-on-dark);
 }
+.lab-add {
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  border: 2px dashed color-mix(in srgb, var(--cm-neon) 55%, transparent);
+  border-radius: 7% / 5%;
+  background: transparent;
+  color: var(--cm-neon);
+  font: inherit;
+  font-family: var(--cm-font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lab-add:hover {
+  background: color-mix(in srgb, var(--cm-neon) 8%, transparent);
+  border-color: var(--cm-neon);
+}
+.lab-add:focus-visible {
+  outline: 2px solid var(--cm-neon);
+  outline-offset: 3px;
+}
+.lab-add__plus {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  display: grid;
+  place-items: center;
+  font-size: 1.9rem;
+  line-height: 1;
+}
 .lab-foot {
   color: var(--cm-mute-on-dark);
   font-size: 0.9rem;
