@@ -242,6 +242,12 @@
   border-color: var(--cm-ink);
   --wordmark-bolt: var(--cm-ink);
 }
+.cm-back--light {
+  background: var(--cm-card-light-bg);
+  color: var(--cm-card-light-fg);
+  border-color: var(--cm-teal);
+  --wordmark-bolt: var(--cm-teal);
+}
 .cm-back__pattern {
   position: absolute;
   inset: -10%;
