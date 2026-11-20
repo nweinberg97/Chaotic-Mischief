@@ -330,14 +330,20 @@ export function LabPage({ params }: { params: URLSearchParams }) {
           <p>Edit any card, add new ones, or take cards out. Click a card to flip it. Nothing here changes the real game.</p>
           <ol className="lab-steps">
             <li>
+              <span>
               <b>Add or change cards.</b> Use the dashed “Add a card” box at the end of any row, or Edit on any card.
+              </span>
             </li>
             <li>
+              <span>
               <b>Tap “Email my changes”</b> when you’re done. Your email opens with everything ready.
+              </span>
             </li>
             <li>
+              <span>
               <b>Add the email address of whoever sent you this link, and send.</b> Your changes only live on this device
               until you do.
+              </span>
             </li>
           </ol>
         </section>
