@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Wordmark } from '../components/Brand';
 import { CategoryIcon } from '../components/CategoryIcon';
 import { CardBack, CardFace } from '../components/GameCard';
@@ -238,8 +239,9 @@ function PrintSheets({ cards }: { cards: Card[] }) {
   );
   const pages: Card[][] = [];
   for (let i = 0; i < sorted.length; i += 9) pages.push(sorted.slice(i, i + 9));
-  return (
-    <div className="lab-print" aria-hidden>
+  // Portalled next to #root, like the site's other print sheets (#root is hidden in print).
+  return createPortal(
+    <div className="print-only lab-print" aria-hidden>
       {pages.map((page, i) => (
         <section key={i} className="lab-print__page">
           {page.map((card) => (
@@ -256,7 +258,8 @@ function PrintSheets({ cards }: { cards: Card[] }) {
           </div>
         ))}
       </section>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

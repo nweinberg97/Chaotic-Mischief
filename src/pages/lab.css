@@ -521,30 +521,15 @@
   gap: 12px;
 }
 
-/* Print: "Download the deck as a PDF" prints only the card sheets */
-.lab-print {
-  display: none;
-}
+/* Print: "Download the deck as a PDF" prints only the card sheets (portalled as .print-only) */
 @media print {
   @page {
     size: letter;
     margin: 10mm;
   }
-  body,
-  .lab {
-    background: #fff !important;
-    min-height: 0;
-  }
-  .lab > :not(.lab-print) {
-    display: none !important;
-  }
-  .lab-print {
-    display: block;
-  }
   .lab-print__page {
     display: grid;
     grid-template-columns: repeat(3, 58mm);
-    grid-auto-rows: auto;
     gap: 4mm;
     justify-content: center;
     break-after: page;
@@ -561,7 +546,5 @@
   .lab-print__card .cm-card,
   .lab-print__card .cm-back {
     box-shadow: none;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
   }
 }
