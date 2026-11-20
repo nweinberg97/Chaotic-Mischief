@@ -61,27 +61,27 @@ function saveLocal(lab: LabState) {
   }
 }
 
-/** A card you can click to flip between front and back. */
+/** A card you can click to flip between front and back. Only the visible side is rendered, to keep 150 cards light. */
 function FlipTile({ card, showBack }: { card: Card; showBack: boolean }) {
   const [flipped, setFlipped] = useState(false);
+  const [turning, setTurning] = useState(false);
   useEffect(() => setFlipped(false), [showBack]);
   const down = showBack !== flipped;
   const tone = CATEGORIES[card.category].tone;
+  function flip() {
+    if (turning) return;
+    setTurning(true);
+    window.setTimeout(() => setFlipped((f) => !f), 140);
+    window.setTimeout(() => setTurning(false), 280);
+  }
   return (
     <button
       type="button"
-      className="lab-tile__flip card-frame flip"
-      onClick={() => setFlipped((f) => !f)}
+      className={`lab-tile__flip card-frame ${turning ? 'is-turning' : ''}`}
+      onClick={flip}
       aria-label={`${card.title || 'Untitled card'}: showing the ${down ? 'back' : 'front'}. Click to flip.`}
     >
-      <span className={`flip__inner ${down ? 'is-down' : ''}`}>
-        <span className="flip__face" aria-hidden={down}>
-          <CardFace card={card} />
-        </span>
-        <span className="flip__back" aria-hidden={!down}>
-          {backFor(tone)}
-        </span>
-      </span>
+      {down ? backFor(tone) : <CardFace card={card} />}
     </button>
   );
 }
@@ -424,7 +424,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
                       </h3>
                       <p>{CATEGORIES[cat].blurb}</p>
                       <button type="button" className="lab-link" onClick={() => startNew(cat)}>
-                        + Add a {CATEGORIES[cat].name} card
+                        + Add {CATEGORIES[cat].name === 'Action' ? 'an' : 'a'} {CATEGORIES[cat].name} card
                       </button>
                     </div>
                     <ul className="lab-grid">

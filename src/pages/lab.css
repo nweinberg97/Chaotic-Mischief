@@ -90,8 +90,7 @@
   position: sticky;
   top: 0;
   z-index: 5;
-  background: color-mix(in srgb, var(--cm-ink) 94%, transparent);
-  backdrop-filter: blur(6px);
+  background: var(--cm-ink);
   border: 1px solid var(--cm-ink-3);
   border-radius: var(--cm-radius);
   padding: 14px 16px;
@@ -248,10 +247,21 @@
   font: inherit;
   text-align: inherit;
 }
-.lab-tile__flip .flip__inner,
-.lab-tile__flip .flip__face,
-.lab-tile__flip .flip__back {
-  display: block;
+.lab-tile__flip {
+  transition: transform 0.14s ease-in;
+}
+.lab-tile__flip.is-turning {
+  animation: lab-turn 0.28s ease-in-out;
+}
+@keyframes lab-turn {
+  50% {
+    transform: scaleX(0.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-tile__flip.is-turning {
+    animation: none;
+  }
 }
 .lab-tile--removed .lab-tile__flip {
   opacity: 0.35;
@@ -304,8 +314,7 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background: rgb(5 8 8 / 0.8);
-  backdrop-filter: blur(3px);
+  background: rgb(5 8 8 / 0.88);
   display: grid;
   place-items: center;
   padding: 12px;
