@@ -232,32 +232,89 @@ function Editor({ draft, isNew, original, onChange, onSave, onCancel }: EditorPr
 
 const PRINT_ORDER: CategoryId[] = ['action', 'performance', 'challenge', 'connection', 'side-quest', 'mischief', 'chaos'];
 
-/** Letter pages, 9 cards each, in deck order, then a page of the three backs. Printed via the browser's "Save as PDF". */
-function PrintSheets({ cards }: { cards: Card[] }) {
-  const sorted = [...cards].sort(
-    (a, b) => PRINT_ORDER.indexOf(a.category) - PRINT_ORDER.indexOf(b.category) || a.number - b.number,
+type PrintMode = 'all' | 'changes' | 'new';
+
+const PRINT_TITLE: Record<PrintMode, string> = {
+  all: 'The whole deck',
+  changes: 'All my changes',
+  new: 'New cards',
+};
+
+/** What changed on an edited card, in a few words. */
+function describeEdit(card: Card, original?: Card): string {
+  if (!original) return '';
+  const parts: string[] = [];
+  if (card.category !== original.category) parts.push(`type: ${CATEGORIES[original.category].name} → ${CATEGORIES[card.category].name}`);
+  if (card.creditValue !== original.creditValue) parts.push(`credits ${original.creditValue} → ${card.creditValue}`);
+  if (card.title !== original.title) parts.push('title');
+  if (card.description !== original.description) parts.push('card text');
+  if ((card.specialRule ?? '') !== (original.specialRule ?? '')) parts.push('extra line');
+  if ((card.timerSeconds ?? 0) !== (original.timerSeconds ?? 0)) parts.push('timer');
+  if (card.mechanic !== original.mechanic) parts.push(card.mechanic === 'shared' ? 'now EACH' : 'no longer EACH');
+  if (JSON.stringify(card.chaosEffect ?? null) !== JSON.stringify(original.chaosEffect ?? null)) parts.push('chaos effect');
+  return parts.length ? `Changed: ${parts.join(', ')}` : '';
+}
+
+/**
+ * Letter pages printed via the browser's "Save as PDF".
+ * all: the deck as it stands (9 cards a page) plus the three backs.
+ * changes / new: only those cards, each labelled New, Edited (with what changed) or Removed.
+ */
+function PrintSheets({ items, mode }: { items: LabCard[]; mode: PrintMode }) {
+  const sorted = [...items].sort(
+    (a, b) =>
+      PRINT_ORDER.indexOf(a.card.category) - PRINT_ORDER.indexOf(b.card.category) || a.card.number - b.card.number,
   );
-  const pages: Card[][] = [];
-  for (let i = 0; i < sorted.length; i += 9) pages.push(sorted.slice(i, i + 9));
+  const labelled = mode !== 'all';
+  // labelled PDFs show each card front + back side by side: 6 cards a page; the whole deck fits 9 a page
+  const perPage = labelled ? 6 : 9;
+  const pages: LabCard[][] = [];
+  for (let i = 0; i < sorted.length; i += perPage) pages.push(sorted.slice(i, i + perPage));
+  const colourName: Record<CardTone, string> = { dark: 'Black card', light: 'White card', teal: 'Teal card' };
+  const date = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
   // Portalled next to #root, like the site's other print sheets (#root is hidden in print).
   return createPortal(
-    <div className="print-only lab-print" aria-hidden>
+    <div className={`print-only lab-print ${labelled ? 'lab-print--labelled' : ''}`} aria-hidden>
       {pages.map((page, i) => (
         <section key={i} className="lab-print__page">
-          {page.map((card) => (
-            <div key={card.id} className="lab-print__card card-frame">
-              <CardFace card={card} />
+          {labelled && (
+            <p className="lab-print__head">
+              Chaotic Mischief · Card Lab · {PRINT_TITLE[mode]} ({sorted.length}) · {date} · page {i + 1} of {pages.length}
+            </p>
+          )}
+          {page.map(({ card, status, original }) => (
+            <div key={card.id} className={`lab-print__item lab-print__item--${status}`}>
+              {labelled ? (
+                <>
+                  <p className="lab-print__label">
+                    <b>{STATUS_LABEL[status]}</b> {CATEGORIES[card.category].name} · {colourName[CATEGORIES[card.category].tone]}
+                    {status === 'edited' && <span className="lab-print__what">{describeEdit(card, original)}</span>}
+                  </p>
+                  <div className="lab-print__pair">
+                    <div className="lab-print__card card-frame">
+                      <CardFace card={card} />
+                    </div>
+                    <div className="lab-print__card card-frame">{backFor(CATEGORIES[card.category].tone)}</div>
+                  </div>
+                </>
+              ) : (
+                <div className="lab-print__card card-frame">
+                  <CardFace card={card} />
+                </div>
+              )}
             </div>
           ))}
         </section>
       ))}
-      <section className="lab-print__page">
-        {(['dark', 'light', 'teal'] as CardTone[]).map((tone) => (
-          <div key={tone} className="lab-print__card card-frame">
-            {backFor(tone)}
-          </div>
-        ))}
-      </section>
+      {!labelled && (
+        <section className="lab-print__page">
+          {(['dark', 'light', 'teal'] as CardTone[]).map((tone) => (
+            <div key={tone} className="lab-print__item">
+              <div className="lab-print__card card-frame">{backFor(tone)}</div>
+            </div>
+          ))}
+        </section>
+      )}
     </div>,
     document.body,
   );
@@ -273,14 +330,14 @@ export function LabPage({ params }: { params: URLSearchParams }) {
   const [shareUrl, setShareUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
-  const [printing, setPrinting] = useState(false);
+  const [printing, setPrinting] = useState<PrintMode | null>(null);
 
   useEffect(() => saveLocal(lab), [lab]);
 
   // "Download deck as PDF": render the print sheets, open the print dialog, then tidy up.
   useEffect(() => {
     if (!printing) return;
-    const done = () => setPrinting(false);
+    const done = () => setPrinting(null);
     window.addEventListener('afterprint', done);
     const t = window.setTimeout(() => window.print(), 300);
     return () => {
@@ -418,11 +475,22 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             <button type="button" className="lab-link" onClick={() => setLab(proposalLab(DECK))}>
               Load the Nov rules proposal
             </button>
-            <button type="button" className="lab-link" onClick={() => setPrinting(true)}>
-              Download the deck as a PDF
-            </button>
+            <span className="lab-pdf">
+              <span className="lab-pdf__label">Download a PDF:</span>{' '}
+              <button type="button" className="lab-link" onClick={() => setPrinting('all')}>
+                Whole deck
+              </button>
+              {' · '}
+              <button type="button" className="lab-link" onClick={() => setPrinting('changes')} disabled={totalChanges === 0}>
+                All my changes
+              </button>
+              {' · '}
+              <button type="button" className="lab-link" onClick={() => setPrinting('new')} disabled={counts.added === 0}>
+                New cards only
+              </button>
+            </span>
             <button type="button" className="lab-link" onClick={download} disabled={totalChanges === 0}>
-              Download changes
+              Download changes as data
             </button>
             {confirmReset ? (
               <span className="lab-confirm">
@@ -535,7 +603,14 @@ export function LabPage({ params }: { params: URLSearchParams }) {
         </p>
       </main>
 
-      {printing && <PrintSheets cards={inDeck.map((c) => c.card)} />}
+      {printing && (
+        <PrintSheets
+          mode={printing}
+          items={
+            printing === 'all' ? inDeck : printing === 'new' ? cards.filter((c) => c.status === 'new') : cards.filter((c) => c.status !== 'same')
+          }
+        />
+      )}
 
       {editing && (
         <Editor
