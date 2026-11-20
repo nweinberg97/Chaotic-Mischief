@@ -520,3 +520,31 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
 }
+
+/* Print: "Download the deck as a PDF" prints only the card sheets (portalled as .print-only) */
+@media print {
+  @page {
+    size: letter;
+    margin: 10mm;
+  }
+  .lab-print__page {
+    display: grid;
+    grid-template-columns: repeat(3, 58mm);
+    gap: 4mm;
+    justify-content: center;
+    break-after: page;
+    page-break-after: always;
+  }
+  .lab-print__page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+  .lab-print__card {
+    width: 58mm;
+    break-inside: avoid;
+  }
+  .lab-print__card .cm-card,
+  .lab-print__card .cm-back {
+    box-shadow: none;
+  }
+}
