@@ -184,10 +184,14 @@
   margin-top: 22px;
 }
 .lab-colour__head {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 18px;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+.lab-colour__back {
+  width: 80px;
+  flex: none;
 }
 .lab-colour__head h2 {
   font-family: var(--cm-font-display);
