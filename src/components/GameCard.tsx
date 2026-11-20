@@ -84,8 +84,8 @@ export function CardBack({ variant = 'standard', label }: CardBackProps) {
   return (
     <div className={`cm-back cm-back--${variant}`} aria-hidden={label ? undefined : true}>
       <div className="cm-back__pattern" aria-hidden>
-        {Array.from({ length: 14 }, (_, i) => (
-          <span key={i}>{variant === 'secret' ? 'Secret Secret Secret Secret' : 'Chaotic Chaotic Chaotic Chaotic'}</span>
+        {Array.from({ length: 26 }, (_, i) => (
+          <span key={i}>{(variant === 'secret' ? 'Secret ' : 'Chaotic ').repeat(8)}</span>
         ))}
       </div>
       <div className="cm-back__inner">

@@ -462,6 +462,14 @@ export function LabPage({ params }: { params: URLSearchParams }) {
                           </div>
                         </li>
                       ))}
+                      <li className="lab-tile lab-tile--add">
+                        <button type="button" className="lab-add" onClick={() => startNew(cat)}>
+                          <span className="lab-add__plus" aria-hidden>
+                            +
+                          </span>
+                          <span>Add {CATEGORIES[cat].name === 'Action' ? 'an' : 'a'} {CATEGORIES[cat].name} card</span>
+                        </button>
+                      </li>
                     </ul>
                   </div>
                 );
