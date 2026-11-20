@@ -351,8 +351,9 @@
   border: 2px solid currentColor;
   display: grid;
   place-items: center;
-  font-size: 1.9rem;
-  line-height: 1;
+}
+.lab-add__plus svg {
+  display: block;
 }
 .lab-foot {
   color: var(--cm-mute-on-dark);
