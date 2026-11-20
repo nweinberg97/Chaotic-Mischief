@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { Wordmark } from '../components/Brand';
 import { CategoryIcon } from '../components/CategoryIcon';
 import { CardBack, CardFace } from '../components/GameCard';
@@ -229,16 +228,6 @@ function Editor({ draft, isNew, original, onChange, onSave, onCancel }: EditorPr
   );
 }
 
-const PRINT_ORDER: CategoryId[] = ['action', 'performance', 'challenge', 'connection', 'side-quest', 'mischief', 'chaos'];
-
-type PrintMode = 'all' | 'changes' | 'new';
-
-const PRINT_TITLE: Record<PrintMode, string> = {
-  all: 'The whole deck',
-  changes: 'All my changes',
-  new: 'New cards',
-};
-
 /** What changed on an edited card, in a few words. */
 function describeEdit(card: Card, original?: Card): string {
   if (!original) return '';
@@ -254,96 +243,18 @@ function describeEdit(card: Card, original?: Card): string {
   return parts.length ? `Changed: ${parts.join(', ')}` : '';
 }
 
-/**
- * Letter pages printed via the browser's "Save as PDF".
- * all: the deck as it stands (9 cards a page) plus the three backs.
- * changes / new: only those cards, each labelled New, Edited (with what changed) or Removed.
- */
-function PrintSheets({ items, mode }: { items: LabCard[]; mode: PrintMode }) {
-  const sorted = [...items].sort(
-    (a, b) =>
-      PRINT_ORDER.indexOf(a.card.category) - PRINT_ORDER.indexOf(b.card.category) || a.card.number - b.card.number,
-  );
-  const labelled = mode !== 'all';
-  // labelled PDFs show each card front + back side by side: 6 cards a page; the whole deck fits 9 a page
-  const perPage = labelled ? 6 : 9;
-  const pages: LabCard[][] = [];
-  for (let i = 0; i < sorted.length; i += perPage) pages.push(sorted.slice(i, i + perPage));
-  const colourName: Record<CardTone, string> = { dark: 'Black card', light: 'White card', teal: 'Teal card' };
-  const date = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-  // Portalled next to #root, like the site's other print sheets (#root is hidden in print).
-  return createPortal(
-    <div className={`print-only lab-print ${labelled ? 'lab-print--labelled' : ''}`} aria-hidden>
-      {pages.map((page, i) => (
-        <section key={i} className="lab-print__page">
-          {labelled && (
-            <p className="lab-print__head">
-              Chaotic Mischief · Card Lab · {PRINT_TITLE[mode]} ({sorted.length}) · {date} · page {i + 1} of {pages.length}
-            </p>
-          )}
-          {page.map(({ card, status, original }) => (
-            <div key={card.id} className={`lab-print__item lab-print__item--${status}`}>
-              {labelled ? (
-                <>
-                  <p className="lab-print__label">
-                    <b>{STATUS_LABEL[status]}</b> {CATEGORIES[card.category].name} · {colourName[CATEGORIES[card.category].tone]}
-                    {status === 'edited' && <span className="lab-print__what">{describeEdit(card, original)}</span>}
-                  </p>
-                  <div className="lab-print__pair">
-                    <div className="lab-print__card card-frame">
-                      <CardFace card={card} />
-                    </div>
-                    <div className="lab-print__card card-frame">{backFor(CATEGORIES[card.category].tone)}</div>
-                  </div>
-                </>
-              ) : (
-                <div className="lab-print__card card-frame">
-                  <CardFace card={card} />
-                </div>
-              )}
-            </div>
-          ))}
-        </section>
-      ))}
-      {!labelled && (
-        <section className="lab-print__page">
-          {(['dark', 'light', 'teal'] as CardTone[]).map((tone) => (
-            <div key={tone} className="lab-print__item">
-              <div className="lab-print__card card-frame">{backFor(tone)}</div>
-            </div>
-          ))}
-        </section>
-      )}
-    </div>,
-    document.body,
-  );
-}
-
 export function LabPage({ params }: { params: URLSearchParams }) {
   const [lab, setLab] = useState<LabState>(loadLocal);
   const [incoming, setIncoming] = useState<LabState | null>(null);
   const [linkError, setLinkError] = useState(false);
   const [showBacks, setShowBacks] = useState(false);
-  const [onlyChanged, setOnlyChanged] = useState(false);
+  const [view, setView] = useState<'all' | 'changes' | 'new'>('all');
   const [editing, setEditing] = useState<{ draft: Card; isNew: boolean; original?: Card } | null>(null);
   const [shareUrl, setShareUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
-  const [printing, setPrinting] = useState<PrintMode | null>(null);
 
   useEffect(() => saveLocal(lab), [lab]);
-
-  // "Download deck as PDF": render the print sheets, open the print dialog, then tidy up.
-  useEffect(() => {
-    if (!printing) return;
-    const done = () => setPrinting(null);
-    window.addEventListener('afterprint', done);
-    const t = window.setTimeout(() => window.print(), 300);
-    return () => {
-      window.clearTimeout(t);
-      window.removeEventListener('afterprint', done);
-    };
-  }, [printing]);
 
   useEffect(() => {
     if (!editing) return;
@@ -372,25 +283,15 @@ export function LabPage({ params }: { params: URLSearchParams }) {
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#/lab`);
   }
 
-  async function share() {
-    setShareUrl(`${window.location.origin}${window.location.pathname}#/lab?d=${await encodeLab(lab)}`);
-    setCopied(false);
-  }
-
   const shareSummary = `${counts.edited} edited, ${counts.added} new, ${counts.removed} removed`;
-  const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
-  async function sendWithPhone() {
-    try {
-      await navigator.share({ title: 'My Chaotic Mischief card changes', text: `My card changes (${shareSummary}):`, url: shareUrl });
-    } catch {
-      /* closed the share sheet */
-    }
-  }
-
-  function emailLink() {
+  /** One step: build the link and open an email with it. The sender only adds the address. */
+  async function emailChanges() {
+    const url = `${window.location.origin}${window.location.pathname}#/lab?d=${await encodeLab(lab)}`;
+    setShareUrl(url);
+    setCopied(false);
     const subject = 'My Chaotic Mischief card changes';
-    const body = `Here are my card changes (${shareSummary}). Open this link to see them in the Card Lab:\n\n${shareUrl}\n`;
+    const body = `Here are my card changes (${shareSummary}). Open this link to see them in the Card Lab:\n\n${url}\n`;
     window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
@@ -428,7 +329,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
           <h1>Every card, ready to play with.</h1>
           <p>
             Edit any card, add new ones, or take cards out. Click a card to flip it. Nothing here changes the real game:
-            your changes stay on this device until you send them with <strong>Share my changes</strong>.
+            your changes stay on this device until you send them with <strong>Email my changes</strong>.
           </p>
         </section>
 
@@ -468,31 +369,26 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             <button type="button" className="btn" onClick={() => startNew()}>
               + New card
             </button>
+            <button type="button" className="btn btn--ghost" onClick={emailChanges} disabled={totalChanges === 0}>
+              Email my changes
+            </button>
             <button type="button" className="btn btn--ghost" aria-pressed={showBacks} onClick={() => setShowBacks((b) => !b)}>
               {showBacks ? 'Show all fronts' : 'Flip all to backs'}
             </button>
-            <button type="button" className="btn btn--ghost" aria-pressed={onlyChanged} onClick={() => setOnlyChanged((o) => !o)}>
-              {onlyChanged ? 'Show every card' : 'Only my changes'}
-            </button>
-            <button type="button" className="btn btn--ghost" onClick={share} disabled={totalChanges === 0}>
-              Share my changes
-            </button>
+          </div>
+          <div className="lab-filter" role="group" aria-label="Show">
+            <span>Show:</span>
+            {([
+              ['all', 'All cards'],
+              ['changes', `All changes (${totalChanges})`],
+              ['new', `New cards (${counts.added})`],
+            ] as const).map(([id, label]) => (
+              <button key={id} type="button" className={view === id ? 'is-on' : ''} aria-pressed={view === id} onClick={() => setView(id)}>
+                {label}
+              </button>
+            ))}
           </div>
           <div className="lab-bar__more">
-            <span className="lab-pdf">
-              <span className="lab-pdf__label">Download a PDF:</span>{' '}
-              <button type="button" className="lab-link" onClick={() => setPrinting('all')}>
-                Whole deck
-              </button>
-              {' · '}
-              <button type="button" className="lab-link" onClick={() => setPrinting('changes')} disabled={totalChanges === 0}>
-                All my changes
-              </button>
-              {' · '}
-              <button type="button" className="lab-link" onClick={() => setPrinting('new')} disabled={counts.added === 0}>
-                New cards only
-              </button>
-            </span>
             {confirmReset ? (
               <span className="lab-confirm">
                 Clear every change on this device?{' '}
@@ -510,38 +406,33 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             )}
           </div>
           {shareUrl && (
-            <div className="lab-share" role="region" aria-label="Send your changes">
+            <div className="lab-share" role="region" aria-label="Email your changes">
               <div className="lab-share__top">
-                <h2>Send your changes</h2>
+                <h2>Your email should be open</h2>
                 <button type="button" className="lab-link" onClick={() => setShareUrl('')}>
                   Close
                 </button>
               </div>
-              <p>
-                This link holds your changes ({shareSummary}). Send it by text or email. Whoever opens it sees your
-                cards in their Card Lab.
+              <p>The email already has the link with your changes ({shareSummary}). Just add the address and send.</p>
+              <p className="lab-share__note">
+                Email didn’t open?{' '}
+                <button type="button" className="lab-link" onClick={copyLink}>
+                  {copied ? 'Link copied' : 'Copy the link'}
+                </button>{' '}
+                and paste it into a message instead. Made more changes later? Send a new one.
               </p>
-              <div className="lab-share__btns">
-                {canNativeShare && (
-                  <button type="button" className="btn" onClick={sendWithPhone}>
-                    Send by text or app
-                  </button>
-                )}
-                <button type="button" className={canNativeShare ? 'btn btn--ghost' : 'btn'} onClick={emailLink}>
-                  Email it
-                </button>
-                <button type="button" className="btn btn--ghost" onClick={copyLink}>
-                  {copied ? 'Copied' : 'Copy link'}
-                </button>
-              </div>
-              <input readOnly value={shareUrl} onFocus={(e) => e.currentTarget.select()} aria-label="Share link" />
-              <p className="lab-share__note">If you make more changes later, send a new link.</p>
             </div>
           )}
         </div>
 
+        {view !== 'all' && cards.every((c) => (view === 'new' ? c.status !== 'new' : c.status === 'same')) && (
+          <p className="lab-empty">{view === 'new' ? 'No new cards yet.' : 'No changes yet.'} Edit or add a card and it shows up here.</p>
+        )}
+
         {COLOURS.map((col) => {
           const colourCards = cards.filter((c) => col.cats.includes(c.card.category));
+          const shown = (c: LabCard) => view === 'all' || (view === 'new' ? c.status === 'new' : c.status !== 'same');
+          if (view !== 'all' && !colourCards.some(shown)) return null;
           return (
             <section key={col.tone} className={`lab-colour lab-colour--${col.tone}`}>
               <div className="lab-colour__head">
@@ -556,8 +447,8 @@ export function LabPage({ params }: { params: URLSearchParams }) {
               {col.cats.map((cat) => {
                 const list = colourCards
                   .filter((c) => c.card.category === cat)
-                  .filter((c) => !onlyChanged || c.status !== 'same');
-                if (onlyChanged && list.length === 0) return null;
+                  .filter(shown);
+                if (view !== 'all' && list.length === 0) return null;
                 return (
                   <div key={cat} className="lab-cat">
                     <div className="lab-cat__head">
@@ -576,6 +467,9 @@ export function LabPage({ params }: { params: URLSearchParams }) {
                           <FlipTile card={card} showBack={showBacks} />
                           <div className="lab-tile__meta">
                             {status !== 'same' && <span className={`lab-badge lab-badge--${status}`}>{STATUS_LABEL[status]}</span>}
+                            {status === 'edited' && describeEdit(card, original) && (
+                              <p className="lab-tile__what">{describeEdit(card, original)}</p>
+                            )}
                             <div className="lab-tile__btns">
                               {status === 'removed' ? (
                                 <button type="button" className="lab-link" onClick={() => setLab((l) => restoreCard(l, card.id))}>
@@ -604,6 +498,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
                           </div>
                         </li>
                       ))}
+                      {view === 'all' && (
                       <li className="lab-tile lab-tile--add">
                         <button type="button" className="lab-add" onClick={() => startNew(cat)}>
                           <span className="lab-add__plus" aria-hidden>
@@ -614,6 +509,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
                           <span>Add {CATEGORIES[cat].name === 'Action' ? 'an' : 'a'} {CATEGORIES[cat].name} card</span>
                         </button>
                       </li>
+                      )}
                     </ul>
                   </div>
                 );
@@ -626,15 +522,6 @@ export function LabPage({ params }: { params: URLSearchParams }) {
           until we copy approved changes over.
         </p>
       </main>
-
-      {printing && (
-        <PrintSheets
-          mode={printing}
-          items={
-            printing === 'all' ? inDeck : printing === 'new' ? cards.filter((c) => c.status === 'new') : cards.filter((c) => c.status !== 'same')
-          }
-        />
-      )}
 
       {editing && (
         <Editor
