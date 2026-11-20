@@ -229,6 +229,37 @@ function Editor({ draft, isNew, original, onChange, onSave, onCancel }: EditorPr
   );
 }
 
+const PRINT_ORDER: CategoryId[] = ['action', 'performance', 'challenge', 'connection', 'side-quest', 'mischief', 'chaos'];
+
+/** Letter pages, 9 cards each, in deck order, then a page of the three backs. Printed via the browser's "Save as PDF". */
+function PrintSheets({ cards }: { cards: Card[] }) {
+  const sorted = [...cards].sort(
+    (a, b) => PRINT_ORDER.indexOf(a.category) - PRINT_ORDER.indexOf(b.category) || a.number - b.number,
+  );
+  const pages: Card[][] = [];
+  for (let i = 0; i < sorted.length; i += 9) pages.push(sorted.slice(i, i + 9));
+  return (
+    <div className="lab-print" aria-hidden>
+      {pages.map((page, i) => (
+        <section key={i} className="lab-print__page">
+          {page.map((card) => (
+            <div key={card.id} className="lab-print__card card-frame">
+              <CardFace card={card} />
+            </div>
+          ))}
+        </section>
+      ))}
+      <section className="lab-print__page">
+        {(['dark', 'light', 'teal'] as CardTone[]).map((tone) => (
+          <div key={tone} className="lab-print__card card-frame">
+            {backFor(tone)}
+          </div>
+        ))}
+      </section>
+    </div>
+  );
+}
+
 export function LabPage({ params }: { params: URLSearchParams }) {
   const [lab, setLab] = useState<LabState>(loadLocal);
   const [incoming, setIncoming] = useState<LabState | null>(null);
@@ -239,8 +270,21 @@ export function LabPage({ params }: { params: URLSearchParams }) {
   const [shareUrl, setShareUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [printing, setPrinting] = useState(false);
 
   useEffect(() => saveLocal(lab), [lab]);
+
+  // "Download deck as PDF": render the print sheets, open the print dialog, then tidy up.
+  useEffect(() => {
+    if (!printing) return;
+    const done = () => setPrinting(false);
+    window.addEventListener('afterprint', done);
+    const t = window.setTimeout(() => window.print(), 300);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener('afterprint', done);
+    };
+  }, [printing]);
 
   useEffect(() => {
     if (!editing) return;
@@ -371,6 +415,9 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             <button type="button" className="lab-link" onClick={() => setLab(proposalLab(DECK))}>
               Load the Nov rules proposal
             </button>
+            <button type="button" className="lab-link" onClick={() => setPrinting(true)}>
+              Download the deck as a PDF
+            </button>
             <button type="button" className="lab-link" onClick={download} disabled={totalChanges === 0}>
               Download changes
             </button>
@@ -484,6 +531,8 @@ export function LabPage({ params }: { params: URLSearchParams }) {
           until we copy approved changes over.
         </p>
       </main>
+
+      {printing && <PrintSheets cards={inDeck.map((c) => c.card)} />}
 
       {editing && (
         <Editor
