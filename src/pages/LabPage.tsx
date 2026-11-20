@@ -75,14 +75,15 @@ function FlipTile({ card, showBack }: { card: Card; showBack: boolean }) {
     window.setTimeout(() => setTurning(false), 280);
   }
   return (
-    <button
-      type="button"
-      className={`lab-tile__flip card-frame ${turning ? 'is-turning' : ''}`}
-      onClick={flip}
-      aria-label={`${card.title || 'Untitled card'}: showing the ${down ? 'back' : 'front'}. Click to flip.`}
-    >
+    <div className={`lab-tile__flip card-frame ${turning ? 'is-turning' : ''}`}>
       {down ? backFor(tone) : <CardFace card={card} />}
-    </button>
+      <button
+        type="button"
+        className="lab-tile__hit"
+        onClick={flip}
+        aria-label={`${card.title || 'Untitled card'}: showing the ${down ? 'back' : 'front'}. Flip it.`}
+      />
+    </div>
   );
 }
 
