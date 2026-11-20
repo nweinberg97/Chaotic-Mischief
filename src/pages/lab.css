@@ -127,10 +127,40 @@
   display: grid;
   gap: 6px;
 }
+.lab-share {
+  border: 2px solid var(--cm-neon);
+  border-radius: var(--cm-radius);
+  padding: 14px 16px;
+  gap: 10px;
+}
 .lab-share p {
   margin: 0;
-  color: var(--cm-neon);
+  color: var(--cm-paper);
   font-size: 0.95rem;
+}
+.lab-share__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.lab-share__top h2 {
+  font-family: var(--cm-font-display);
+  font-size: 1.3rem;
+  margin: 0;
+}
+.lab-share__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.lab-share__btns .btn {
+  min-height: 44px;
+  font-size: 0.85rem;
+}
+.lab-share p.lab-share__note {
+  color: var(--cm-mute-on-dark);
+  font-size: 0.85rem;
 }
 .lab-share input {
   width: 100%;

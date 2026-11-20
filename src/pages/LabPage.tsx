@@ -373,14 +373,33 @@ export function LabPage({ params }: { params: URLSearchParams }) {
   }
 
   async function share() {
-    const url = `${window.location.origin}${window.location.pathname}#/lab?d=${await encodeLab(lab)}`;
-    setShareUrl(url);
+    setShareUrl(`${window.location.origin}${window.location.pathname}#/lab?d=${await encodeLab(lab)}`);
     setCopied(false);
+  }
+
+  const shareSummary = `${counts.edited} edited, ${counts.added} new, ${counts.removed} removed`;
+  const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+
+  async function sendWithPhone() {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.share({ title: 'My Chaotic Mischief card changes', text: `My card changes (${shareSummary}):`, url: shareUrl });
+    } catch {
+      /* closed the share sheet */
+    }
+  }
+
+  function emailLink() {
+    const subject = 'My Chaotic Mischief card changes';
+    const body = `Here are my card changes (${shareSummary}). Open this link to see them in the Card Lab:\n\n${shareUrl}\n`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
     } catch {
-      /* the link is shown below to copy by hand */
+      setCopied(false);
     }
   }
 
@@ -491,9 +510,32 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             )}
           </div>
           {shareUrl && (
-            <div className="lab-share">
-              <p>{copied ? 'Link copied. Send it to anyone: opening it shows them your changes.' : 'Copy this link and send it:'}</p>
+            <div className="lab-share" role="region" aria-label="Send your changes">
+              <div className="lab-share__top">
+                <h2>Send your changes</h2>
+                <button type="button" className="lab-link" onClick={() => setShareUrl('')}>
+                  Close
+                </button>
+              </div>
+              <p>
+                This link holds your changes ({shareSummary}). Send it by text or email. Whoever opens it sees your
+                cards in their Card Lab.
+              </p>
+              <div className="lab-share__btns">
+                {canNativeShare && (
+                  <button type="button" className="btn" onClick={sendWithPhone}>
+                    Send by text or app
+                  </button>
+                )}
+                <button type="button" className={canNativeShare ? 'btn btn--ghost' : 'btn'} onClick={emailLink}>
+                  Email it
+                </button>
+                <button type="button" className="btn btn--ghost" onClick={copyLink}>
+                  {copied ? 'Copied' : 'Copy link'}
+                </button>
+              </div>
               <input readOnly value={shareUrl} onFocus={(e) => e.currentTarget.select()} aria-label="Share link" />
+              <p className="lab-share__note">If you make more changes later, send a new link.</p>
             </div>
           )}
         </div>
