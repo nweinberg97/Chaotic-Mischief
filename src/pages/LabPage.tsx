@@ -336,13 +336,13 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             </li>
             <li>
               <span>
-              <b>Tap “Email my changes”</b> when you’re done. Your email opens with everything ready.
+              <b>Tap “Email changes”</b> when you’re done. Your email opens with everything ready.
               </span>
             </li>
             <li>
               <span>
-              <b>Add the email address of whoever sent you this link, and send.</b> Your changes only live on this device
-              until you do.
+              <b>Type in the email of the person who sent you this link, then hit send.</b> Until you send it,
+              your changes are only saved on this phone or computer, so nobody else can see them yet.
               </span>
             </li>
           </ol>
@@ -375,7 +375,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
           {totalChanges > 0 && !shareUrl && (
             <p className="lab-nudge">
               You have {totalChanges} unsent {totalChanges === 1 ? 'change' : 'changes'}. When you’re done, tap{' '}
-              <b>Email my changes</b> so they don’t get lost.
+              <b>Email changes</b> so they don’t get lost.
             </p>
           )}
           <div className="lab-bar__counts" aria-live="polite">
@@ -391,7 +391,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
               + New card
             </button>
             <button type="button" className={totalChanges > 0 ? 'btn' : 'btn btn--ghost'} onClick={emailChanges} disabled={totalChanges === 0}>
-              Email my changes
+              Email changes
             </button>
             <button type="button" className="btn btn--ghost" aria-pressed={showBacks} onClick={() => setShowBacks((b) => !b)}>
               {showBacks ? 'Show all fronts' : 'Flip all to backs'}
