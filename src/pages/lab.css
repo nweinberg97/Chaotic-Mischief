@@ -35,8 +35,10 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px max(16px, 4vw) 80px;
-  display: grid;
-  gap: 28px;
+}
+/* Flow layout on purpose: nested grids around 150 container-query cards make layout very slow. */
+.lab-main > * + * {
+  margin-top: 28px;
 }
 
 .lab-intro {
@@ -169,10 +171,11 @@
 
 /* colours and categories */
 .lab-colour {
-  display: grid;
-  gap: 18px;
   padding-top: 28px;
   border-top: 1px solid var(--cm-ink-3);
+}
+.lab-colour > * + * {
+  margin-top: 22px;
 }
 .lab-colour__head {
   display: grid;
@@ -189,9 +192,8 @@
   margin: 4px 0 0;
   color: var(--cm-mute-on-dark);
 }
-.lab-cat {
-  display: grid;
-  gap: 14px;
+.lab-cat > * + * {
+  margin-top: 14px;
 }
 .lab-cat__head {
   display: flex;
@@ -230,10 +232,10 @@
   gap: 22px 16px;
 }
 .lab-tile {
-  display: grid;
-  gap: 8px;
-  align-content: start;
   min-width: 0;
+}
+.lab-tile__meta {
+  margin-top: 8px;
 }
 .lab-tile__hit {
   position: absolute;
