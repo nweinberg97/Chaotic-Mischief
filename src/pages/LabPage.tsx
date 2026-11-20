@@ -327,10 +327,19 @@ export function LabPage({ params }: { params: URLSearchParams }) {
         <section className="lab-intro">
           <p className="eyebrow">Card Lab · not the live deck</p>
           <h1>Every card, ready to play with.</h1>
-          <p>
-            Edit any card, add new ones, or take cards out. Click a card to flip it. Nothing here changes the real game:
-            your changes stay on this device until you send them with <strong>Email my changes</strong>.
-          </p>
+          <p>Edit any card, add new ones, or take cards out. Click a card to flip it. Nothing here changes the real game.</p>
+          <ol className="lab-steps">
+            <li>
+              <b>Add or change cards.</b> Use the dashed “Add a card” box at the end of any row, or Edit on any card.
+            </li>
+            <li>
+              <b>Tap “Email my changes”</b> when you’re done. Your email opens with everything ready.
+            </li>
+            <li>
+              <b>Add the email address of whoever sent you this link, and send.</b> Your changes only live on this device
+              until you do.
+            </li>
+          </ol>
         </section>
 
         {incoming && (
@@ -357,6 +366,12 @@ export function LabPage({ params }: { params: URLSearchParams }) {
         )}
 
         <div className="lab-bar">
+          {totalChanges > 0 && !shareUrl && (
+            <p className="lab-nudge">
+              You have {totalChanges} unsent {totalChanges === 1 ? 'change' : 'changes'}. When you’re done, tap{' '}
+              <b>Email my changes</b> so they don’t get lost.
+            </p>
+          )}
           <div className="lab-bar__counts" aria-live="polite">
             <b>{inDeck.length}</b> cards in the deck
             {totalChanges > 0 && (
@@ -369,7 +384,7 @@ export function LabPage({ params }: { params: URLSearchParams }) {
             <button type="button" className="btn" onClick={() => startNew()}>
               + New card
             </button>
-            <button type="button" className="btn btn--ghost" onClick={emailChanges} disabled={totalChanges === 0}>
+            <button type="button" className={totalChanges > 0 ? 'btn' : 'btn btn--ghost'} onClick={emailChanges} disabled={totalChanges === 0}>
               Email my changes
             </button>
             <button type="button" className="btn btn--ghost" aria-pressed={showBacks} onClick={() => setShowBacks((b) => !b)}>

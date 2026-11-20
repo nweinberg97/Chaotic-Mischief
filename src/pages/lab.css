@@ -600,3 +600,49 @@
   color: var(--cm-mute-on-dark);
   margin: 0;
 }
+.lab-steps {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  display: grid;
+  gap: 10px;
+}
+.lab-steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 12px;
+  align-items: start;
+  color: var(--cm-mute-on-dark);
+}
+.lab-steps li::before {
+  content: counter(step);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--cm-neon);
+  color: var(--cm-ink);
+  font-family: var(--cm-font-display);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.14em;
+  box-sizing: border-box;
+}
+.lab-steps b {
+  color: var(--cm-paper);
+}
+.lab-nudge {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--cm-neon) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cm-neon) 55%, transparent);
+  color: var(--cm-paper);
+  font-size: 0.95rem;
+}
+.lab-nudge b {
+  color: var(--cm-neon);
+}
